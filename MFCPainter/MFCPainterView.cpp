@@ -101,7 +101,10 @@ CMFCPainterDoc* CMFCPainterView::GetDocument() const // 디버그되지 않은 �
 
 void CMFCPainterView::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	CClientDC dc(this);
+	dc.MoveTo(point.x, point.y);
+	m_CPointpoint.x = point.x;
+	m_CPointpoint.y = point.y;
 
 	CView::OnLButtonDown(nFlags, point);
 }
@@ -109,7 +112,13 @@ void CMFCPainterView::OnLButtonDown(UINT nFlags, CPoint point)
 
 void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 {
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	CClientDC dc(this);
+	if ((nFlags&&MK_LBUTTON) == MK_LBUTTON) {
+		dc.MoveTo(m_CPointpoint.x, m_CPointpoint.y);
+		dc.LineTo(point.x, point.y);
+		m_CPointpoint.x = point.x;
+		m_CPointpoint.y = point.y;
+	}
 
 	CView::OnMouseMove(nFlags, point);
 }
