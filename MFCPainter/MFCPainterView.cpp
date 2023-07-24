@@ -25,6 +25,8 @@ IMPLEMENT_DYNCREATE(CMFCPainterView, CView)
 BEGIN_MESSAGE_MAP(CMFCPainterView, CView)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
+	ON_WM_LBUTTONDOWN()
+	ON_WM_MOUSEMOVE()
 END_MESSAGE_MAP()
 
 // CMFCPainterView 생성/소멸
@@ -95,3 +97,19 @@ CMFCPainterDoc* CMFCPainterView::GetDocument() const // 디버그되지 않은 �
 
 
 // CMFCPainterView 메시지 처리기
+
+
+void CMFCPainterView::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	CView::OnLButtonDown(nFlags, point);
+}
+
+
+void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	CView::OnMouseMove(nFlags, point);
+}
