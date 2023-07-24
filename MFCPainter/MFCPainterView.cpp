@@ -27,6 +27,7 @@ BEGIN_MESSAGE_MAP(CMFCPainterView, CView)
 	ON_WM_RBUTTONUP()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_MOUSEMOVE()
+	ON_WM_LBUTTONUP()
 END_MESSAGE_MAP()
 
 // CMFCPainterView 생성/소멸
@@ -58,6 +59,17 @@ void CMFCPainterView::OnDraw(CDC* /*pDC*/)
 	if (!pDoc)
 		return;
 
+	CClientDC dc(this);
+
+	for (int i = 0; i < m_VecVecCPoint.size(); i++)
+	{
+		dc.MoveTo(m_VecVecCPoint[i][0].x, m_VecVecCPoint[i][0].y);
+		for (int j = 0; j < m_VecVecCPoint[i].size(); j++) {
+			dc.LineTo(m_VecVecCPoint[i][j].x, m_VecVecCPoint[i][j].y);
+		}
+	}
+	
+	Invalidate(TRUE);
 	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
 }
 
@@ -102,9 +114,6 @@ CMFCPainterDoc* CMFCPainterView::GetDocument() const // 디버그되지 않은 �
 void CMFCPainterView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	CClientDC dc(this);
-	dc.MoveTo(point.x, point.y);
-	m_CPointpoint.x = point.x;
-	m_CPointpoint.y = point.y;
 
 	CView::OnLButtonDown(nFlags, point);
 }
@@ -113,12 +122,19 @@ void CMFCPainterView::OnLButtonDown(UINT nFlags, CPoint point)
 void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	CClientDC dc(this);
+	dc.MoveTo(point.x,point.y);
+	m_CPointpoint.x = point.x;
+	m_CPointpoint.y = point.y;
 	if ((nFlags&&MK_LBUTTON) == MK_LBUTTON) {
-		dc.MoveTo(m_CPointpoint.x, m_CPointpoint.y);
-		dc.LineTo(point.x, point.y);
-		m_CPointpoint.x = point.x;
-		m_CPointpoint.y = point.y;
+		m_VecCPoint.push_back(m_CPointpoint);
 	}
-
 	CView::OnMouseMove(nFlags, point);
+}
+
+
+void CMFCPainterView::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	m_VecVecCPoint.push_back(m_VecCPoint);
+	m_VecCPoint.clear();
+	CView::OnLButtonUp(nFlags, point);
 }
