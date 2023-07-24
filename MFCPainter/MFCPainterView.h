@@ -20,7 +20,6 @@ public:
 // 작업입니다.
 public:
 	CPoint m_CPointpoint;
-	vector<vector<CPoint>> m_VecVecCPoint;
 	vector<CPoint> m_VecCPoint;
 
 // 재정의입니다.
@@ -42,13 +41,14 @@ protected:
 // 생성된 메시지 맵 함수
 protected:
 	afx_msg void OnFilePrintPreview();
-	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
+//	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+//	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+//	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 };
 
 #ifndef _DEBUG  // MFCPainterView.cpp의 디버그 버전
