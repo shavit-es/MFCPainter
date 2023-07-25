@@ -24,13 +24,16 @@ IMPLEMENT_DYNCREATE(CMFCPainterView, CView)
 
 BEGIN_MESSAGE_MAP(CMFCPainterView, CView)
 	ON_WM_CONTEXTMENU()
-	//	ON_WM_RBUTTONUP()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_MOUSEMOVE()
-	//	ON_WM_LBUTTONUP()
 	//ON_WM_RBUTTONUP()
 	ON_WM_LBUTTONUP()
 	ON_WM_PAINT()
+
+	ON_COMMAND_RANGE(ID_FREELINE, ID_ECLIPSE, OnChangeTool)
+	ON_UPDATE_COMMAND_UI_RANGE(ID_FREELINE, ID_ECLIPSE, OnUpdateChangeTool)
+	ON_COMMAND(ID_LINECOLOR, &CMFCPainterView::OnLinecolor)
+	ON_COMMAND(ID_FILLCOLOR, &CMFCPainterView::OnFillcolor)
 END_MESSAGE_MAP()
 
 // CMFCPainterView 생성/소멸
@@ -79,6 +82,16 @@ void CMFCPainterView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 #endif
 }
 
+void CMFCPainterView::OnChangeTool(UINT wParam)
+{
+	m_nType = GetCurrentMessage()->wParam;
+}
+
+void CMFCPainterView::OnUpdateChangeTool(CCmdUI * pCmdUI)
+{
+	pCmdUI->SetCheck(m_nType == (int)pCmdUI->m_nID);
+}
+
 
 // CMFCPainterView 진단
 
@@ -120,8 +133,7 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 	if ((nFlags&&MK_LBUTTON) == MK_LBUTTON) {
 		CPen pen, *pOldPen;
 		CBrush brush, *pOldBrush;
-		m_nType = ID_DrawRectangle;
-		if (m_nType == ID_DrawCurve) {
+		if (m_nType == ID_FREELINE) {
 			pen.CreatePen(PS_SOLID, m_nPenThickness, m_ColorLine);
 			pOldPen = (CPen *)dc.SelectObject(&pen);
 			dc.MoveTo(m_CPointpoint.x, m_CPointpoint.y);
@@ -129,30 +141,34 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 			m_CPointpoint = point;
 			dc.SelectObject(pOldPen);
 		}
-		else if (m_nType == ID_DrawLine) {
-			pen.CreatePen(PS_SOLID, 1, m_ColorXor);
+		else if (m_nType == ID_LINE) {
+			pen.CreatePen(PS_SOLID, m_nPenThickness, m_ColorXor);
 			dc.SelectObject(GetStockObject(NULL_BRUSH));
 			dc.SetROP2(R2_XORPEN);
 			pOldPen = (CPen *)dc.SelectObject(&pen);
+
 			dc.MoveTo(m_CPointpoint.x, m_CPointpoint.y);
 			dc.LineTo(m_CPointnewpoint.x, m_CPointnewpoint.y);
+
 			dc.MoveTo(m_CPointpoint.x, m_CPointpoint.y);
 			dc.LineTo(point.x, point.y);
+
 			dc.SelectObject(pOldPen);
 
 		}
-		else if (m_nType == ID_DrawRectangle) {
-			pen.CreatePen(PS_SOLID, 1, m_ColorXor);
+		else if (m_nType == ID_RECTANGLE) {
+			pen.CreatePen(PS_SOLID, m_nPenThickness, RGB(255,255,255));
 			dc.SelectObject(GetStockObject(NULL_BRUSH));
 			dc.SetROP2(R2_XORPEN);
 			pOldPen = (CPen *)dc.SelectObject(&pen);
+			dc.Rectangle(m_CPointpoint.x, m_CPointpoint.y, m_CPointnewpoint.x, m_CPointnewpoint.y);
 			dc.Rectangle(m_CPointpoint.x, m_CPointpoint.y, point.x, point.y);
 			dc.SelectObject(pOldPen);
 		}
-		else if (m_nType == ID_DrawCircle) {
+		else if (m_nType == ID_ECLIPSE) {
 
 			//펜생성
-			pen.CreatePen(PS_SOLID, 1, m_ColorXor);
+			pen.CreatePen(PS_SOLID, m_nPenThickness, RGB(255, 255, 255));
 			dc.SelectObject(GetStockObject(NULL_BRUSH));
 			dc.SetROP2(R2_XORPEN);
 			pOldPen = (CPen *)dc.SelectObject(&pen);
@@ -174,14 +190,14 @@ void CMFCPainterView::OnLButtonUp(UINT nFlags, CPoint point)
 	ReleaseCapture();
 	CClientDC dc(this);
 	CBrush brush, *pOldBrush;
-	if (m_nType == ID_DrawRectangle) {
+	if (m_nType == ID_RECTANGLE) {
 
 		brush.CreateSolidBrush(m_ColorFill);
 		pOldBrush = (CBrush *)dc.SelectObject(brush);
 		dc.Rectangle(m_CPointpoint.x, m_CPointpoint.y, point.x, point.y);
 
 	}
-	else if (m_nType == ID_DrawCircle) {
+	else if (m_nType == ID_ECLIPSE) {
 		brush.CreateSolidBrush(m_ColorFill);
 		pOldBrush = (CBrush *)dc.SelectObject(brush);
 		dc.Ellipse(m_CPointpoint.x, m_CPointpoint.y, point.x, point.y);
@@ -195,4 +211,23 @@ void CMFCPainterView::OnPaint()
 	CPaintDC dc(this); // device context for painting
 					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
 					   // 그리기 메시지에 대해서는 CView::OnPaint()을(를) 호출하지 마십시오.
+}
+
+
+void CMFCPainterView::OnLinecolor()
+{
+	CColorDialog dlg;
+	if (dlg.DoModal() == IDOK) {
+		m_ColorLine = dlg.GetColor(); //선택한 색을 COLORREF로 return
+		m_ColorXor = (RGB(GetRValue(m_ColorLine) ^ 255, GetGValue(m_ColorLine) ^ 255, GetBValue(m_ColorLine) ^ 255));
+	}
+}
+
+
+void CMFCPainterView::OnFillcolor()
+{
+	CColorDialog dlg;
+	if (dlg.DoModal() == IDOK) {
+		m_ColorFill = dlg.GetColor();
+	}
 }

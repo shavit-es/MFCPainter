@@ -22,10 +22,6 @@ public:
 	CPoint m_CPointpoint, m_CPointnewpoint;
 	vector<CPoint> m_VecCPoint;
 	int m_nType;
-	int ID_DrawCurve = 0;
-	int ID_DrawLine = 1;
-	int ID_DrawRectangle = 2;
-	int ID_DrawCircle = 3;
 
 	int m_nPenThickness = 1;
 	COLORREF m_ColorLine, m_ColorFill;
@@ -52,6 +48,9 @@ protected:
 	afx_msg void OnFilePrintPreview();
 	//	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
+	
+	afx_msg void OnChangeTool(UINT wParam);
+	afx_msg void OnUpdateChangeTool(CCmdUI* pCmdUI);
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
@@ -60,6 +59,8 @@ public:
 	//	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnPaint();
+	afx_msg void OnLinecolor();
+	afx_msg void OnFillcolor();
 };
 
 #ifndef _DEBUG  // MFCPainterView.cpp의 디버그 버전
