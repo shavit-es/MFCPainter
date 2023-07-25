@@ -34,6 +34,8 @@ BEGIN_MESSAGE_MAP(CMFCPainterView, CView)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_FREELINE, ID_ECLIPSE, OnUpdateChangeTool)
 	ON_COMMAND(ID_LINECOLOR, &CMFCPainterView::OnLinecolor)
 	ON_COMMAND(ID_FILLCOLOR, &CMFCPainterView::OnFillcolor)
+	ON_COMMAND(ID_FREELINE, &CMFCPainterView::OnFreeline)
+	ON_UPDATE_COMMAND_UI(ID_FREELINE, &CMFCPainterView::OnUpdateFreeline)
 END_MESSAGE_MAP()
 
 // CMFCPainterView 생성/소멸
@@ -241,4 +243,16 @@ void CMFCPainterView::OnFillcolor()
 	if (dlg.DoModal() == IDOK) {
 		m_ColorFill = dlg.GetColor();
 	}
+}
+
+
+void CMFCPainterView::OnFreeline()
+{
+	m_nType = ID_FREELINE;
+}
+
+
+void CMFCPainterView::OnUpdateFreeline(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(TRUE);
 }

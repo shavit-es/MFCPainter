@@ -63,6 +63,8 @@ public:
 	afx_msg void OnPaint();
 	afx_msg void OnLinecolor();
 	afx_msg void OnFillcolor();
+	afx_msg void OnFreeline();
+	afx_msg void OnUpdateFreeline(CCmdUI *pCmdUI);
 };
 
 #ifndef _DEBUG  // MFCPainterView.cpp의 디버그 버전

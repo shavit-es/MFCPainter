@@ -216,8 +216,6 @@
     <Image Include="res\MFCPainter.ico" />
     <Image Include="res\MFCPainterDoc.ico" />
     <Image Include="res\Toolbar.bmp" />
-    <Image Include="res\toolbar1.bmp" />
-    <Image Include="res\Toolbar256.bmp" />
     <Image Include="res\userimages.bmp" />
   </ItemGroup>
   <ItemGroup>
