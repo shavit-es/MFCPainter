@@ -144,7 +144,7 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 			dc.SelectObject(pOldPen);
 		}
 		else if (m_nType == ID_LINE) {
-			pen.CreatePen(PS_SOLID, m_nPenThickness, m_ColorXor);
+			pen.CreatePen(PS_SOLID, m_nPenThickness, m_ColorLineXor);
 			dc.SelectObject(GetStockObject(NULL_BRUSH));
 			dc.SetROP2(R2_XORPEN);
 			pOldPen = (CPen *)dc.SelectObject(&pen);
@@ -159,7 +159,7 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 
 		}
 		else if (m_nType == ID_RECTANGLE) {
-			pen.CreatePen(PS_SOLID, m_nPenThickness, RGB(255,255,255));
+			pen.CreatePen(PS_SOLID, m_nPenThickness, m_ColorLineXor);
 			dc.SelectObject(GetStockObject(NULL_BRUSH));
 			dc.SetROP2(R2_XORPEN);
 			pOldPen = (CPen *)dc.SelectObject(&pen);
@@ -170,7 +170,7 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 		else if (m_nType == ID_ECLIPSE) {
 
 			//펜생성
-			pen.CreatePen(PS_SOLID, m_nPenThickness, RGB(255, 255, 255));
+			pen.CreatePen(PS_SOLID, m_nPenThickness, m_ColorLineXor);
 			dc.SelectObject(GetStockObject(NULL_BRUSH));
 			dc.SetROP2(R2_XORPEN);
 			pOldPen = (CPen *)dc.SelectObject(&pen);
@@ -193,13 +193,22 @@ void CMFCPainterView::OnLButtonUp(UINT nFlags, CPoint point)
 	CClientDC dc(this);
 	CBrush brush, *pOldBrush;
 	if (m_nType == ID_RECTANGLE) {
-
+		//테두리 색을 선색으로
+		CPen pen, *pOldPen;
+		pen.CreatePen(PS_SOLID, m_nPenThickness, m_ColorLine);
+		pOldPen = (CPen *)dc.SelectObject(&pen);
+		//내부 색을 색칠색으로
 		brush.CreateSolidBrush(m_ColorFill);
 		pOldBrush = (CBrush *)dc.SelectObject(brush);
 		dc.Rectangle(m_CPointpoint.x, m_CPointpoint.y, point.x, point.y);
 
 	}
 	else if (m_nType == ID_ECLIPSE) {
+		//테두리 색을 선색으로
+		CPen pen, *pOldPen;
+		pen.CreatePen(PS_SOLID, m_nPenThickness, m_ColorLine);
+		pOldPen = (CPen *)dc.SelectObject(&pen);
+		//내부 색을 색칠 색으로
 		brush.CreateSolidBrush(m_ColorFill);
 		pOldBrush = (CBrush *)dc.SelectObject(brush);
 		dc.Ellipse(m_CPointpoint.x, m_CPointpoint.y, point.x, point.y);
@@ -221,7 +230,7 @@ void CMFCPainterView::OnLinecolor()
 	CColorDialog dlg;
 	if (dlg.DoModal() == IDOK) {
 		m_ColorLine = dlg.GetColor(); //선택한 색을 COLORREF로 return
-		m_ColorXor = (RGB(GetRValue(m_ColorLine) ^ 255, GetGValue(m_ColorLine) ^ 255, GetBValue(m_ColorLine) ^ 255));
+		m_ColorLineXor = (RGB(GetRValue(m_ColorLine) ^ 255, GetGValue(m_ColorLine) ^ 255, GetBValue(m_ColorLine) ^ 255));
 	}
 }
 

@@ -24,9 +24,11 @@ public:
 	int m_nType = ID_FREELINE;
 
 	int m_nPenThickness = 1;
-	COLORREF m_ColorLine, m_ColorFill;
-	COLORREF m_ColorXor;
-
+	//검은색으로 초기화
+	COLORREF m_ColorLine = RGB(0,0,0);
+	COLORREF m_ColorFill = RGB(0, 0, 0);
+	COLORREF m_ColorLineXor = RGB(0^255,0^255,0^255);
+	COLORREF m_ColorLieXor = RGB(0 ^ 255, 0 ^ 255, 0 ^ 255);
 	// 재정의입니다.
 public:
 	virtual void OnDraw(CDC* pDC);  // 이 뷰를 그리기 위해 재정의되었습니다.

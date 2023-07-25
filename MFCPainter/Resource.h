@@ -28,19 +28,22 @@
 #define ID_VIEW_APPLOOK_OFF_2007_AQUA   218
 #define ID_VIEW_APPLOOK_WINDOWS_7       219
 #define IDS_EDIT_MENU                   306
-#define ID_FREELINE                        32771
-#define ID_LINE                        32772
-#define ID_RECTANGLE                        32773
-#define ID_ECLIPSE                        32774
-#define ID_LINECOLOR                        32775
-#define ID_FILLCOLOR                        32776
+#define IDR_TOOLBAR1                    310
+#define ID_FREELINE                     32771
+#define ID_LINE                         32772
+#define ID_RECTANGLE                    32773
+#define ID_ECLIPSE                      32774
+#define ID_LINECOLOR                    32775
+#define ID_FILLCOLOR                    32776
+#define ID_RECTANGULAR                  32779
+#define ID_BUTTON32780                  32780
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        310
-#define _APS_NEXT_COMMAND_VALUE         32777
+#define _APS_NEXT_RESOURCE_VALUE        313
+#define _APS_NEXT_COMMAND_VALUE         32781
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
