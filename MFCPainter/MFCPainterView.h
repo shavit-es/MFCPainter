@@ -23,7 +23,7 @@ public:
 	vector<CPoint> m_VecCPoint;
 	int m_nType = ID_FREELINE;
 
-	int m_nPenThickness = 1;
+	int m_nLineThickness = 1;
 	//검은색으로 초기화
 	COLORREF m_ColorLine = RGB(0,0,0);
 	COLORREF m_ColorFill = RGB(0, 0, 0);
@@ -63,8 +63,9 @@ public:
 	afx_msg void OnPaint();
 	afx_msg void OnLinecolor();
 	afx_msg void OnFillcolor();
-	afx_msg void OnFreeline();
-	afx_msg void OnUpdateFreeline(CCmdUI *pCmdUI);
+//	afx_msg void OnFreeline();
+//	afx_msg void OnUpdateFreeline(CCmdUI *pCmdUI);
+	afx_msg void OnLinethickness();
 };
 
 #ifndef _DEBUG  // MFCPainterView.cpp의 디버그 버전

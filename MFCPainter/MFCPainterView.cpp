@@ -12,7 +12,6 @@
 
 #include "MFCPainterDoc.h"
 #include "MFCPainterView.h"
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -34,8 +33,9 @@ BEGIN_MESSAGE_MAP(CMFCPainterView, CView)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_FREELINE, ID_ECLIPSE, OnUpdateChangeTool)
 	ON_COMMAND(ID_LINECOLOR, &CMFCPainterView::OnLinecolor)
 	ON_COMMAND(ID_FILLCOLOR, &CMFCPainterView::OnFillcolor)
-	ON_COMMAND(ID_FREELINE, &CMFCPainterView::OnFreeline)
-	ON_UPDATE_COMMAND_UI(ID_FREELINE, &CMFCPainterView::OnUpdateFreeline)
+//	ON_COMMAND(ID_FREELINE, &CMFCPainterView::OnFreeline)
+//	ON_UPDATE_COMMAND_UI(ID_FREELINE, &CMFCPainterView::OnUpdateFreeline)
+ON_COMMAND(ID_LINETHICKNESS, &CMFCPainterView::OnLinethickness)
 END_MESSAGE_MAP()
 
 // CMFCPainterView 생성/소멸
@@ -138,7 +138,7 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 		CPen pen, *pOldPen;
 		CBrush brush, *pOldBrush;
 		if (m_nType == ID_FREELINE) {
-			pen.CreatePen(PS_SOLID, m_nPenThickness, m_ColorLine);
+			pen.CreatePen(PS_SOLID, m_nLineThickness, m_ColorLine);
 			pOldPen = (CPen *)dc.SelectObject(&pen);
 			dc.MoveTo(m_CPointpoint.x, m_CPointpoint.y);
 			dc.LineTo(point.x, point.y);
@@ -146,7 +146,7 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 			dc.SelectObject(pOldPen);
 		}
 		else if (m_nType == ID_LINE) {
-			pen.CreatePen(PS_SOLID, m_nPenThickness, m_ColorLineXor);
+			pen.CreatePen(PS_SOLID, m_nLineThickness, m_ColorLineXor);
 			dc.SelectObject(GetStockObject(NULL_BRUSH));
 			dc.SetROP2(R2_XORPEN);
 			pOldPen = (CPen *)dc.SelectObject(&pen);
@@ -161,7 +161,7 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 
 		}
 		else if (m_nType == ID_RECTANGLE) {
-			pen.CreatePen(PS_SOLID, m_nPenThickness, m_ColorLineXor);
+			pen.CreatePen(PS_SOLID, m_nLineThickness, m_ColorLineXor);
 			dc.SelectObject(GetStockObject(NULL_BRUSH));
 			dc.SetROP2(R2_XORPEN);
 			pOldPen = (CPen *)dc.SelectObject(&pen);
@@ -172,7 +172,7 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 		else if (m_nType == ID_ECLIPSE) {
 
 			//펜생성
-			pen.CreatePen(PS_SOLID, m_nPenThickness, m_ColorLineXor);
+			pen.CreatePen(PS_SOLID, m_nLineThickness, m_ColorLineXor);
 			dc.SelectObject(GetStockObject(NULL_BRUSH));
 			dc.SetROP2(R2_XORPEN);
 			pOldPen = (CPen *)dc.SelectObject(&pen);
@@ -197,7 +197,7 @@ void CMFCPainterView::OnLButtonUp(UINT nFlags, CPoint point)
 	if (m_nType == ID_RECTANGLE) {
 		//테두리 색을 선색으로
 		CPen pen, *pOldPen;
-		pen.CreatePen(PS_SOLID, m_nPenThickness, m_ColorLine);
+		pen.CreatePen(PS_SOLID, m_nLineThickness, m_ColorLine);
 		pOldPen = (CPen *)dc.SelectObject(&pen);
 		//내부 색을 색칠색으로
 		brush.CreateSolidBrush(m_ColorFill);
@@ -208,7 +208,7 @@ void CMFCPainterView::OnLButtonUp(UINT nFlags, CPoint point)
 	else if (m_nType == ID_ECLIPSE) {
 		//테두리 색을 선색으로
 		CPen pen, *pOldPen;
-		pen.CreatePen(PS_SOLID, m_nPenThickness, m_ColorLine);
+		pen.CreatePen(PS_SOLID, m_nLineThickness, m_ColorLine);
 		pOldPen = (CPen *)dc.SelectObject(&pen);
 		//내부 색을 색칠 색으로
 		brush.CreateSolidBrush(m_ColorFill);
@@ -245,14 +245,6 @@ void CMFCPainterView::OnFillcolor()
 	}
 }
 
-
-void CMFCPainterView::OnFreeline()
+void CMFCPainterView::OnLinethickness()
 {
-	m_nType = ID_FREELINE;
-}
-
-
-void CMFCPainterView::OnUpdateFreeline(CCmdUI *pCmdUI)
-{
-	pCmdUI->Enable(TRUE);
 }
