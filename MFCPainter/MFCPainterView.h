@@ -21,7 +21,7 @@ public:
 public:
 	CPoint m_CPointpoint, m_CPointnewpoint;
 	vector<CPoint> m_VecCPoint;
-	int m_nType;
+	int m_nType = ID_FREELINE;
 
 	int m_nPenThickness = 1;
 	COLORREF m_ColorLine, m_ColorFill;

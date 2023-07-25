@@ -117,6 +117,8 @@ CMFCPainterDoc* CMFCPainterView::GetDocument() const // 디버그되지 않은 �
 // CMFCPainterView 메시지 처리기
 
 
+
+
 void CMFCPainterView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	CClientDC dc(this);
