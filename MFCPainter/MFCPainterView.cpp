@@ -12,6 +12,7 @@
 
 #include "MFCPainterDoc.h"
 #include "MFCPainterView.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -68,20 +69,9 @@ BOOL CMFCPainterView::PreCreateWindow(CREATESTRUCT& cs)
 
 void CMFCPainterView::OnDraw(CDC* /*pDC*/)
 {
-	CMFCPainterDoc* pDoc = GetDocument();
-	ASSERT_VALID(pDoc);
-	if (!pDoc)
-		return;
 
-
-	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
 }
 
-//void CMFCPainterView::OnRButtonUp(UINT /* nFlags */, CPoint point)
-//{
-//	ClientToScreen(&point);
-//	OnContextMenu(this, point);
-//}
 
 void CMFCPainterView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 {
@@ -187,7 +177,7 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 			dc.SelectObject(pOldPen);
 
 		}
-
+		
 		m_CPointnewpoint = point;
 	}
 	CView::OnMouseMove(nFlags, point);
@@ -202,14 +192,7 @@ void CMFCPainterView::OnLButtonUp(UINT nFlags, CPoint point)
 	CBrush brush, *pOldBrush;
 	if (m_nType == ID_RECTANGLE) {
 		//테두리 색을 선색으로
-		CPen pen, *pOldPen;
-		pen.CreatePen(PS_SOLID, m_nLineThickness, m_ColorLine);
-		pOldPen = (CPen *)dc.SelectObject(&pen);
-		//내부 색을 색칠색으로
-		brush.CreateSolidBrush(m_ColorFill);
-		pOldBrush = (CBrush *)dc.SelectObject(brush);
-		dc.Rectangle(m_CPointpoint.x, m_CPointpoint.y, point.x, point.y);
-
+		m_VecRec.push_back(CRec(m_CPointpoint.x, m_CPointpoint.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
 	}
 	else if (m_nType == ID_ECLIPSE) {
 		//테두리 색을 선색으로
@@ -221,15 +204,28 @@ void CMFCPainterView::OnLButtonUp(UINT nFlags, CPoint point)
 		pOldBrush = (CBrush *)dc.SelectObject(brush);
 		dc.Ellipse(m_CPointpoint.x, m_CPointpoint.y, point.x, point.y);
 	}
+	Invalidate();
 	CView::OnLButtonUp(nFlags, point);
 }
 
 
+
+
 void CMFCPainterView::OnPaint()
 {
-	CPaintDC dc(this); // device context for painting
-					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
-					   // 그리기 메시지에 대해서는 CView::OnPaint()을(를) 호출하지 마십시오.
+	CPaintDC dc(this); 	
+
+	for (int i = 0; i < m_VecRec.size(); i++)
+	{
+		CPen pen, *pOldPen;
+		CBrush brush, *pOldBrush;
+		pen.CreatePen(PS_SOLID, 5, RGB(0, 0, 0));
+		pOldPen = (CPen *)dc.SelectObject(&pen);
+		//내부 색을 색칠색으로
+		brush.CreateSolidBrush(m_VecRec[i].fillcolor);
+		pOldBrush = (CBrush *)dc.SelectObject(brush);
+		dc.Rectangle(m_VecRec[i].x, m_VecRec[i].y, m_VecRec[i].xw, m_VecRec[i].yh);
+	}
 }
 
 

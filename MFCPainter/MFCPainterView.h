@@ -5,6 +5,8 @@
 #pragma once
 #include <vector>
 #include <iostream>
+
+#include "CRec.h"
 using namespace std;
 
 class CMFCPainterView : public CView
@@ -20,10 +22,11 @@ public:
 	// 작업입니다.
 public:
 	CPoint m_CPointpoint, m_CPointnewpoint;
-	vector<CPoint> m_VecCPoint;
+	vector<CRec> m_VecRec;
 	int m_nType = ID_FREELINE;
 
 	int m_nLineThickness = 1;
+	bool m_bLeftclick = false;
 	//검은색으로 초기화
 	COLORREF m_ColorLine = RGB(0,0,0);
 	COLORREF m_ColorFill = RGB(0, 0, 0);
