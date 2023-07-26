@@ -31,7 +31,7 @@
 #define ID_FREELINE                     32771
 #define ID_LINE                         32772
 #define ID_RECTANGLE                    32773
-#define ID_ECLIPSE                      32774
+#define ID_ELLIPSE                      32774
 #define ID_LINECOLOR                    32775
 #define ID_FILLCOLOR                    32776
 #define ID_RECTANGULAR                  32779

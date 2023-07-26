@@ -2,16 +2,16 @@
 #include "pch.h"
 #include "framework.h"
 
-class CRec
+class CEll
 {
 private:
 	LONG x, y, xw, yh;
 	int linethickness;
 	COLORREF linecolor, fillcolor;
-	
+
 
 public:
-	CRec::CRec(LONG tx, LONG ty, LONG txw, LONG tyh, int tlinethickness, COLORREF tlinecolor, COLORREF tfillcolor);
+	CEll::CEll(LONG tx, LONG ty, LONG txw, LONG tyh, int tlinethickness, COLORREF tlinecolor, COLORREF tfillcolor);
 
 
 	LONG Getx() {
@@ -36,5 +36,4 @@ public:
 		return fillcolor;
 	}
 };
-
 

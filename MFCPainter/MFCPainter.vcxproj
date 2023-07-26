@@ -187,6 +187,8 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CEll.h" />
+    <ClInclude Include="CFreeline.h" />
     <ClInclude Include="CRec.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MainFrm.h" />
@@ -198,6 +200,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CEll.cpp" />
+    <ClCompile Include="CFreeline.cpp" />
     <ClCompile Include="CRec.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MFCPainter.cpp" />

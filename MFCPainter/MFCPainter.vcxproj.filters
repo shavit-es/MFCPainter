@@ -42,6 +42,12 @@
     <ClInclude Include="CRec.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="CEll.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CFreeline.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFCPainter.cpp">
@@ -60,6 +66,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="CRec.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CEll.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CFreeline.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

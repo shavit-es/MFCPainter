@@ -7,6 +7,8 @@
 #include <iostream>
 
 #include "CRec.h"
+#include "CEll.h"
+#include "CFreeline.h"
 using namespace std;
 
 class CMFCPainterView : public CView
@@ -23,8 +25,9 @@ public:
 public:
 	CPoint m_CPointpoint, m_CPointnewpoint;
 	vector<CRec> m_VecRec;
+	vector<CEll> m_VecEll;
+	vector<CFreeline> m_VecFreeline;
 	int m_nType = ID_FREELINE;
-
 	int m_nLineThickness = 1;
 	bool m_bLeftclick = false;
 	//검은색으로 초기화
