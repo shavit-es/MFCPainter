@@ -47,8 +47,6 @@ protected:
 
 	// 생성된 메시지 맵 함수
 protected:
-	afx_msg void OnFilePrintPreview();
-	//	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	
 	afx_msg void OnChangeTool(UINT wParam);
@@ -57,15 +55,17 @@ protected:
 public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	//	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
-	//	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnPaint();
 	afx_msg void OnLinecolor();
 	afx_msg void OnFillcolor();
-//	afx_msg void OnFreeline();
-//	afx_msg void OnUpdateFreeline(CCmdUI *pCmdUI);
-	afx_msg void OnLinethickness();
+	afx_msg void OnLt1();
+	afx_msg void OnLt2();
+	afx_msg void OnLt3();
+	afx_msg void OnLt5();
+	afx_msg void OnLt7();
+	afx_msg void OnLt9();
+	afx_msg void OnLt11();
 };
 
 #ifndef _DEBUG  // MFCPainterView.cpp의 디버그 버전

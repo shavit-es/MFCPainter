@@ -35,7 +35,13 @@ BEGIN_MESSAGE_MAP(CMFCPainterView, CView)
 	ON_COMMAND(ID_FILLCOLOR, &CMFCPainterView::OnFillcolor)
 //	ON_COMMAND(ID_FREELINE, &CMFCPainterView::OnFreeline)
 //	ON_UPDATE_COMMAND_UI(ID_FREELINE, &CMFCPainterView::OnUpdateFreeline)
-ON_COMMAND(ID_LINETHICKNESS, &CMFCPainterView::OnLinethickness)
+ON_COMMAND(ID_LT1, &CMFCPainterView::OnLt1)
+ON_COMMAND(ID_LT2, &CMFCPainterView::OnLt2)
+ON_COMMAND(ID_LT3, &CMFCPainterView::OnLt3)
+ON_COMMAND(ID_LT5, &CMFCPainterView::OnLt5)
+ON_COMMAND(ID_LT7, &CMFCPainterView::OnLt7)
+ON_COMMAND(ID_LT9, &CMFCPainterView::OnLt9)
+ON_COMMAND(ID_LT11, &CMFCPainterView::OnLt11)
 END_MESSAGE_MAP()
 
 // CMFCPainterView 생성/소멸
@@ -245,6 +251,11 @@ void CMFCPainterView::OnFillcolor()
 	}
 }
 
-void CMFCPainterView::OnLinethickness()
-{
-}
+
+void CMFCPainterView::OnLt1() { m_nLineThickness = 1; }
+void CMFCPainterView::OnLt2() { m_nLineThickness = 2; }
+void CMFCPainterView::OnLt3() { m_nLineThickness = 3; }
+void CMFCPainterView::OnLt5() { m_nLineThickness = 5; }
+void CMFCPainterView::OnLt7() { m_nLineThickness = 7; }
+void CMFCPainterView::OnLt9() { m_nLineThickness = 9; }
+void CMFCPainterView::OnLt11() { m_nLineThickness = 11; }

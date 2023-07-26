@@ -44,13 +44,46 @@
 #define ID_32789                        32789
 #define ID_                             32790
 #define ID_LINETHICKNESSBUTTON          32791
+#define ID_32792                        32792
+#define ID_32793                        32793
+#define ID_32794                        32794
+#define ID_32795                        32795
+#define ID_32796                        32796
+#define ID_32797                        32797
+#define ID_32798                        32798
+#define ID_32799                        32799
+#define ID_LINETHICKNESS_1              32800
+#define ID_LINETHICKNESS_2              32801
+#define ID_LINETHICKNESS_3              32802
+#define ID_LINETHICKNESS_5              32803
+#define ID_LINETHICKNESS_7              32804
+#define ID_LINETHICKNESS_9              32805
+#define ID_LINETHICKNESS_11             32806
+#define ID_LINETHICKNESS_13             32807
+#define ID_32808                        32808
+#define ID_32809                        32809
+#define ID_32810                        32810
+#define ID_32811                        32811
+#define ID_32812                        32812
+#define ID_32813                        32813
+#define ID_32814                        32814
+#define ID_32815                        32815
+#define ID_LT_1                         32816
+#define ID_LT2                          32817
+#define ID_LT1                          32818
+#define ID_LT3                          32819
+#define ID_LT4                          32820
+#define ID_LT7                          32821
+#define ID_LT5                          32822
+#define ID_LT9                          32823
+#define ID_LT11                         32824
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        317
-#define _APS_NEXT_COMMAND_VALUE         32792
+#define _APS_NEXT_COMMAND_VALUE         32825
 #define _APS_NEXT_CONTROL_VALUE         1002
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
