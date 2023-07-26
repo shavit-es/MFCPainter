@@ -9,6 +9,8 @@
 #include "CRec.h"
 #include "CEll.h"
 #include "CFreeline.h"
+#include "CLine.h"
+
 using namespace std;
 
 class CMFCPainterView : public CView
@@ -27,6 +29,7 @@ public:
 	vector<CRec> m_VecRec;
 	vector<CEll> m_VecEll;
 	vector<CFreeline> m_VecFreeline;
+	vector<CLine> m_VecLine;
 	int m_nType = ID_FREELINE;
 	int m_nLineThickness = 1;
 	bool m_bLeftclick = false;

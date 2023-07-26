@@ -2,17 +2,15 @@
 #include "pch.h"
 #include "framework.h"
 
-class CFreeline
+class CLine
 {
 private:
 	CPoint point;
 	int linethickness;
 	COLORREF linecolor;
-	bool bline;
 
 public:
-	CFreeline::CFreeline(CPoint tpoint, int linethickness, COLORREF linecolor, bool tbline);
-	CFreeline::CFreeline(CPoint tpoint, int linethickness, COLORREF linecolor);
+	CLine::CLine(CPoint tpoint, int tlinethickness, COLORREF tlinecolor);
 
 	int Getlinethickness() {
 		return linethickness;
@@ -25,8 +23,4 @@ public:
 		return point;
 	}
 
-	bool Getbline() {
-		return bline;
-	}
 };
-

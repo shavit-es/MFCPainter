@@ -34,7 +34,6 @@ BEGIN_MESSAGE_MAP(CMFCPainterView, CView)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_FREELINE, ID_ELLIPSE, OnUpdateChangeTool)
 	ON_COMMAND(ID_LINECOLOR, &CMFCPainterView::OnLinecolor)
 	ON_COMMAND(ID_FILLCOLOR, &CMFCPainterView::OnFillcolor)
-//	ON_COMMAND(ID_FREELINE, &CMFCPainterView::OnFreeline)
 //	ON_UPDATE_COMMAND_UI(ID_FREELINE, &CMFCPainterView::OnUpdateFreeline)
 ON_COMMAND(ID_LT1, &CMFCPainterView::OnLt1)
 ON_COMMAND(ID_LT2, &CMFCPainterView::OnLt2)
@@ -123,6 +122,9 @@ void CMFCPainterView::OnLButtonDown(UINT nFlags, CPoint point)
 	m_CPointpoint = point;
 	m_CPointnewpoint = point;
 	SetCapture();
+	if (m_nType == ID_LINE) {
+		m_VecLine.push_back(CLine(m_CPointpoint, m_nLineThickness, m_ColorLine));
+	}
 	CView::OnLButtonDown(nFlags, point);
 }
 
@@ -150,7 +152,6 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 			dc.LineTo(point.x, point.y);
 
 			dc.SelectObject(pOldPen);
-
 		}
 		else if (m_nType == ID_RECTANGLE) {
 			pen.CreatePen(PS_SOLID, m_nLineThickness, m_ColorLineXor);
@@ -162,7 +163,6 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 			dc.SelectObject(pOldPen);
 		}
 		else if (m_nType == ID_ELLIPSE) {
-
 			//펜생성
 			pen.CreatePen(PS_SOLID, m_nLineThickness, m_ColorLineXor);
 			dc.SelectObject(GetStockObject(NULL_BRUSH));
@@ -171,9 +171,7 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 			dc.Ellipse(m_CPointpoint.x, m_CPointpoint.y, m_CPointnewpoint.x, m_CPointnewpoint.y);
 			dc.Ellipse(m_CPointpoint.x, m_CPointpoint.y, point.x, point.y);
 			dc.SelectObject(pOldPen);
-
 		}
-		
 		m_CPointnewpoint = point;
 	}
 	CView::OnMouseMove(nFlags, point);
@@ -188,6 +186,9 @@ void CMFCPainterView::OnLButtonUp(UINT nFlags, CPoint point)
 	CBrush brush, *pOldBrush;
 	if (m_nType == ID_FREELINE) {
 		m_VecFreeline.push_back(CFreeline(point, m_nLineThickness, m_ColorLine,false));
+	}
+	else if (m_nType == ID_LINE) {
+		m_VecLine.push_back(CLine(point, m_nLineThickness, m_ColorLine));
 	}
 	else if (m_nType == ID_RECTANGLE) {
 		m_VecRec.push_back(CRec(m_CPointpoint.x, m_CPointpoint.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
@@ -219,6 +220,21 @@ void CMFCPainterView::OnPaint()
 		dc.MoveTo(m_VecFreeline[i].Getpoint().x, m_VecFreeline[i].Getpoint().y);
 		
 	}
+
+	for (int j = 0; j < m_VecLine.size(); j++)
+	{
+		CPen pen, *pOldPen;
+		CBrush brush, *pOldBrush;
+		pen.CreatePen(PS_SOLID, m_VecLine[j].Getlinethickness(), m_VecLine[j].Getlinecolor());
+		pOldPen = (CPen *)dc.SelectObject(&pen);
+		if (j%2==0) {
+			dc.MoveTo(m_VecLine[j].Getpoint().x, m_VecLine[j].Getpoint().y);
+		}
+		else{
+			dc.LineTo(m_VecLine[j].Getpoint().x, m_VecLine[j].Getpoint().y);
+		}
+	}
+
 	for (int i = 0; i < m_VecRec.size(); i++)
 	{
 		CPen pen, *pOldPen;

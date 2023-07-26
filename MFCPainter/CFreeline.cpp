@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "CFreeline.h"
 
-CFreeline::CFreeline(CPoint tpoint, int tlinethickness, COLORREF tlinecolor, bool tline)
+CFreeline::CFreeline(CPoint tpoint, int tlinethickness, COLORREF tlinecolor, bool tbline)
 {
 	point = tpoint;
 	linethickness = tlinethickness;
 	linecolor = tlinecolor;
-	bline = tline;
+	bline = tbline;
 }
 
 CFreeline::CFreeline(CPoint tpoint, int tlinethickness, COLORREF tlinecolor)

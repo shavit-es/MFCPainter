@@ -48,6 +48,9 @@
     <ClInclude Include="CFreeline.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="CLine.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFCPainter.cpp">
@@ -72,6 +75,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="CFreeline.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CLine.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
