@@ -126,8 +126,13 @@ void CMFCPainterView::OnLButtonDown(UINT nFlags, CPoint point)
 		m_VecLine.push_back(CLine(point, m_nLineThickness, m_ColorLine));
 		m_VecLine.push_back(CLine(point, m_nLineThickness, m_ColorLine));
 		m_bNotDrawing = false;
-	}else if (m_nType == ID_RECTANGLE && m_bNotDrawing) {
+	}
+	else if (m_nType == ID_RECTANGLE && m_bNotDrawing) {
 		m_VecRec.push_back(CRec(point.x, point.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
+		m_bNotDrawing = false;
+	}
+	else if (m_nType == ID_ELLIPSE && m_bNotDrawing) {
+		m_VecEll.push_back(CEll(point.x, point.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
 		m_bNotDrawing = false;
 	}
 	CView::OnLButtonDown(nFlags, point);
@@ -155,14 +160,9 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 			Invalidate(false);			
 		}
 		else if (m_nType == ID_ELLIPSE) {
-			//펜생성
-			pen.CreatePen(PS_SOLID, m_nLineThickness, m_ColorLineXor);
-			dc.SelectObject(GetStockObject(NULL_BRUSH));
-			dc.SetROP2(R2_XORPEN);
-			pOldPen = (CPen *)dc.SelectObject(&pen);
-			dc.Ellipse(m_CPointpoint.x, m_CPointpoint.y, m_CPointnewpoint.x, m_CPointnewpoint.y);
-			dc.Ellipse(m_CPointpoint.x, m_CPointpoint.y, point.x, point.y);
-			dc.SelectObject(pOldPen);
+			m_VecEll.pop_back();
+			m_VecEll.push_back(CEll(m_CPointpoint.x, m_CPointpoint.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
+			Invalidate(false);
 		}
 		m_CPointnewpoint = point;
 	}
@@ -183,11 +183,10 @@ void CMFCPainterView::OnLButtonUp(UINT nFlags, CPoint point)
 		m_bNotDrawing = true;
 	}
 	else if (m_nType == ID_RECTANGLE) {
-		m_VecRec.push_back(CRec(m_CPointpoint.x, m_CPointpoint.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
 		m_bNotDrawing = true;
 	}
 	else if (m_nType == ID_ELLIPSE) {
-		m_VecEll.push_back(CEll(m_CPointpoint.x, m_CPointpoint.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
+		m_bNotDrawing = true;
 	}
 	Invalidate(false);
 	CView::OnLButtonUp(nFlags, point);
