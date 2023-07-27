@@ -13,7 +13,6 @@ private:
 public:
 	CRec::CRec(LONG tx, LONG ty, LONG txw, LONG tyh, int tlinethickness, COLORREF tlinecolor, COLORREF tfillcolor);
 
-
 	LONG Getx() {
 		return x;
 	}

@@ -137,7 +137,7 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 		CBrush brush, *pOldBrush;
 		if (m_nType == ID_FREELINE) {
 			m_VecFreeline.push_back(CFreeline(point, m_nLineThickness, m_ColorLine));
-			Invalidate();
+			Invalidate(false);
 		}
 		else if (m_nType == ID_LINE) {
 			pen.CreatePen(PS_SOLID, m_nLineThickness, m_ColorLineXor);
@@ -196,7 +196,7 @@ void CMFCPainterView::OnLButtonUp(UINT nFlags, CPoint point)
 	else if (m_nType == ID_ELLIPSE) {
 		m_VecEll.push_back(CEll(m_CPointpoint.x, m_CPointpoint.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
 	}
-	Invalidate();
+	Invalidate(false);
 	CView::OnLButtonUp(nFlags, point);
 }
 
@@ -206,18 +206,32 @@ void CMFCPainterView::OnLButtonUp(UINT nFlags, CPoint point)
 void CMFCPainterView::OnPaint()
 {
 	CPaintDC dc(this); 	
+	CDC *pDC = &dc;
+
+	CRect rect;
+	GetClientRect(&rect);
+
+	CDC memDC;
+	CBitmap* pOldBitmap;
+	CBitmap bmp;
+
+	memDC.CreateCompatibleDC(pDC);
+	bmp.CreateCompatibleBitmap(pDC, rect.Width(), rect.Height());
+	pOldBitmap = (CBitmap*)memDC.SelectObject(&bmp);
+	memDC.PatBlt(0, 0, rect.Width(), rect.Height(), WHITENESS);
+
 	for (int i = 1; i < m_VecFreeline.size(); i++)
 	{
 		CPen pen, *pOldPen;
 		CBrush brush, *pOldBrush;
 		pen.CreatePen(PS_SOLID, m_VecFreeline[i].Getlinethickness(), m_VecFreeline[i].Getlinecolor());
-		pOldPen = (CPen *)dc.SelectObject(&pen);
+		pOldPen = (CPen *)memDC.SelectObject(&pen);
 		if (i == 1) {
-			dc.MoveTo(m_VecFreeline[0].Getpoint().x, m_VecFreeline[0].Getpoint().y);
+			memDC.MoveTo(m_VecFreeline[0].Getpoint().x, m_VecFreeline[0].Getpoint().y);
 		}else if (m_VecFreeline[i-1].Getbline()) {
-			dc.LineTo(m_VecFreeline[i].Getpoint().x, m_VecFreeline[i].Getpoint().y);
+			memDC.LineTo(m_VecFreeline[i].Getpoint().x, m_VecFreeline[i].Getpoint().y);
 		}
-		dc.MoveTo(m_VecFreeline[i].Getpoint().x, m_VecFreeline[i].Getpoint().y);
+		memDC.MoveTo(m_VecFreeline[i].Getpoint().x, m_VecFreeline[i].Getpoint().y);
 		
 	}
 
@@ -226,12 +240,12 @@ void CMFCPainterView::OnPaint()
 		CPen pen, *pOldPen;
 		CBrush brush, *pOldBrush;
 		pen.CreatePen(PS_SOLID, m_VecLine[j].Getlinethickness(), m_VecLine[j].Getlinecolor());
-		pOldPen = (CPen *)dc.SelectObject(&pen);
+		pOldPen = (CPen *)memDC.SelectObject(&pen);
 		if (j%2==0) {
-			dc.MoveTo(m_VecLine[j].Getpoint().x, m_VecLine[j].Getpoint().y);
+			memDC.MoveTo(m_VecLine[j].Getpoint().x, m_VecLine[j].Getpoint().y);
 		}
 		else{
-			dc.LineTo(m_VecLine[j].Getpoint().x, m_VecLine[j].Getpoint().y);
+			memDC.LineTo(m_VecLine[j].Getpoint().x, m_VecLine[j].Getpoint().y);
 		}
 	}
 
@@ -240,23 +254,31 @@ void CMFCPainterView::OnPaint()
 		CPen pen, *pOldPen;
 		CBrush brush, *pOldBrush;
 		pen.CreatePen(PS_SOLID, m_VecRec[i].Getlinethickness(), m_VecRec[i].Getlinecolor());
-		pOldPen = (CPen *)dc.SelectObject(&pen);
+		pOldPen = (CPen *)memDC.SelectObject(&pen);
 		//내부 색을 색칠색으로
 		brush.CreateSolidBrush(m_VecRec[i].Getfillcolor());
-		pOldBrush = (CBrush *)dc.SelectObject(brush);
-		dc.Rectangle(m_VecRec[i].Getx(), m_VecRec[i].Gety(), m_VecRec[i].Getxw(), m_VecRec[i].Getyh());
+		pOldBrush = (CBrush *)memDC.SelectObject(brush);
+		memDC.Rectangle(m_VecRec[i].Getx(), m_VecRec[i].Gety(), m_VecRec[i].Getxw(), m_VecRec[i].Getyh());
 	}
 	for (int j = 0; j < m_VecEll.size(); j++)
 	{
 		CPen pen, *pOldPen;
 		CBrush brush, *pOldBrush;
 		pen.CreatePen(PS_SOLID, m_VecEll[j].Getlinethickness(), m_VecEll[j].Getlinecolor());
-		pOldPen = (CPen *)dc.SelectObject(&pen);
+		pOldPen = (CPen *)memDC.SelectObject(&pen);
 		//내부 색을 색칠색으로
 		brush.CreateSolidBrush(m_VecEll[j].Getfillcolor());
-		pOldBrush = (CBrush *)dc.SelectObject(brush);
-		dc.Ellipse(m_VecEll[j].Getx(), m_VecEll[j].Gety(), m_VecEll[j].Getxw(), m_VecEll[j].Getyh());
+		pOldBrush = (CBrush *)memDC.SelectObject(brush);
+		memDC.Ellipse(m_VecEll[j].Getx(), m_VecEll[j].Gety(), m_VecEll[j].Getxw(), m_VecEll[j].Getyh());
 	}
+
+
+	pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &memDC, 0, 0, SRCCOPY);
+
+	memDC.SelectObject(pOldBitmap);
+	memDC.DeleteDC();
+	bmp.DeleteObject();
+
 }
 
 
