@@ -122,8 +122,13 @@ void CMFCPainterView::OnLButtonDown(UINT nFlags, CPoint point)
 	m_CPointpoint = point;
 	m_CPointnewpoint = point;
 	SetCapture();
-	if (m_nType == ID_LINE) {
-		m_VecLine.push_back(CLine(m_CPointpoint, m_nLineThickness, m_ColorLine));
+	if (m_nType == ID_LINE && m_bNotDrawing) {
+		m_VecLine.push_back(CLine(point, m_nLineThickness, m_ColorLine));
+		m_VecLine.push_back(CLine(point, m_nLineThickness, m_ColorLine));
+		m_bNotDrawing = false;
+	}else if (m_nType == ID_RECTANGLE && m_bNotDrawing) {
+		m_VecRec.push_back(CRec(point.x, point.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
+		m_bNotDrawing = false;
 	}
 	CView::OnLButtonDown(nFlags, point);
 }
@@ -140,27 +145,14 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 			Invalidate(false);
 		}
 		else if (m_nType == ID_LINE) {
-			pen.CreatePen(PS_SOLID, m_nLineThickness, m_ColorLineXor);
-			dc.SelectObject(GetStockObject(NULL_BRUSH));
-			dc.SetROP2(R2_XORPEN);
-			pOldPen = (CPen *)dc.SelectObject(&pen);
-
-			dc.MoveTo(m_CPointpoint.x, m_CPointpoint.y);
-			dc.LineTo(m_CPointnewpoint.x, m_CPointnewpoint.y);
-
-			dc.MoveTo(m_CPointpoint.x, m_CPointpoint.y);
-			dc.LineTo(point.x, point.y);
-
-			dc.SelectObject(pOldPen);
+			m_VecLine.pop_back();
+			m_VecLine.push_back(CLine(point, m_nLineThickness, m_ColorLine));
+			Invalidate(false);
 		}
 		else if (m_nType == ID_RECTANGLE) {
-			pen.CreatePen(PS_SOLID, m_nLineThickness, m_ColorLineXor);
-			dc.SelectObject(GetStockObject(NULL_BRUSH));
-			dc.SetROP2(R2_XORPEN);
-			pOldPen = (CPen *)dc.SelectObject(&pen);
-			dc.Rectangle(m_CPointpoint.x, m_CPointpoint.y, m_CPointnewpoint.x, m_CPointnewpoint.y);
-			dc.Rectangle(m_CPointpoint.x, m_CPointpoint.y, point.x, point.y);
-			dc.SelectObject(pOldPen);
+			m_VecRec.pop_back();
+			m_VecRec.push_back(CRec(m_CPointpoint.x, m_CPointpoint.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
+			Invalidate(false);			
 		}
 		else if (m_nType == ID_ELLIPSE) {
 			//펜생성
@@ -188,10 +180,11 @@ void CMFCPainterView::OnLButtonUp(UINT nFlags, CPoint point)
 		m_VecFreeline.push_back(CFreeline(point, m_nLineThickness, m_ColorLine,false));
 	}
 	else if (m_nType == ID_LINE) {
-		m_VecLine.push_back(CLine(point, m_nLineThickness, m_ColorLine));
+		m_bNotDrawing = true;
 	}
 	else if (m_nType == ID_RECTANGLE) {
 		m_VecRec.push_back(CRec(m_CPointpoint.x, m_CPointpoint.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
+		m_bNotDrawing = true;
 	}
 	else if (m_nType == ID_ELLIPSE) {
 		m_VecEll.push_back(CEll(m_CPointpoint.x, m_CPointpoint.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));

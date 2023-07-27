@@ -32,7 +32,7 @@ public:
 	vector<CLine> m_VecLine;
 	int m_nType = ID_FREELINE;
 	int m_nLineThickness = 1;
-	bool m_bLeftclick = false;
+	bool m_bNotDrawing = true;
 	//검은색으로 초기화
 	COLORREF m_ColorLine = RGB(0,0,0);
 	COLORREF m_ColorFill = RGB(255, 255, 255);
