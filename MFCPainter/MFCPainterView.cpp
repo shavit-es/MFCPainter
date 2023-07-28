@@ -220,7 +220,7 @@ void CMFCPainterView::OnPaint()
 
 	for (int i = 0; i < m_vecElement.size(); i++)
 	{
-		m_vecElement[i].Draw(m_vecElement[i], memDC);
+		m_vecElement[i].Draw(memDC);
 	}
 
 	for (int j = 0; j < m_veCStraightLine.size(); j++)

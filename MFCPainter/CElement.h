@@ -14,7 +14,7 @@ public:
 	}
 	bool Getbline() {
 	}
-	void Draw() {
+	void Draw(CDC &memCDC) {
 	}
 	LONG Getx() {
 	}

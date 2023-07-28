@@ -6,7 +6,7 @@
 
 class CFreeline : public CElement
 {
-private:
+protected:
 	CPoint point;
 	int linethickness;
 	COLORREF linecolor;
@@ -32,15 +32,15 @@ public:
 		return bline;
 	}
 
-	void Draw(CFreeline freeline, CDC &memDC) {
+	void Draw(CDC &memDC) {
 		CPen pen, *pOldPen;
 		CBrush brush, *pOldBrush;
-		pen.CreatePen(PS_SOLID, freeline.Getlinethickness(), freeline.Getlinecolor());
+		pen.CreatePen(PS_SOLID, Getlinethickness(), Getlinecolor());
 		pOldPen = (CPen *)memDC.SelectObject(&pen);
-		if (!freeline.bline) {
-			memDC.MoveTo(freeline.Getpoint().x, freeline.Getpoint().y);
+		if (!Getbline()) {
+			memDC.MoveTo(Getpoint().x, Getpoint().y);
 		}
-		memDC.LineTo(freeline.Getpoint().x, freeline.Getpoint().y);
+		memDC.LineTo(Getpoint().x, Getpoint().y);
 	}
 };
 

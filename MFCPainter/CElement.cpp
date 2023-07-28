@@ -11,5 +11,4 @@ CElement::~CElement()
 
 CElement::CElement(CElement & other)
 {
-	other;
 }
