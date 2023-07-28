@@ -25,11 +25,11 @@ public:
 
 	// 작업입니다.
 public:
-	CPoint m_CPointpoint, m_CPointnewpoint;
-	vector<CRec> m_VecRec;
-	vector<CEll> m_VecEll;
-	vector<CFreeline> m_VecFreeline;
-	vector<CLine> m_VecLine;
+	CPoint m_cptPoint, m_cptNewPoint;
+	vector<CRec> m_vecRec;
+	vector<CEll> m_vecEll;
+	vector<CFreeline> m_vecFreeLine;
+	vector<CLine> m_vecLine;
 	int m_nType = ID_FREELINE;
 	int m_nLineThickness = 1;
 	bool m_bNotDrawing = true;

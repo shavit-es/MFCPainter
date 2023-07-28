@@ -26,7 +26,6 @@ BEGIN_MESSAGE_MAP(CMFCPainterView, CView)
 	ON_WM_CONTEXTMENU()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_MOUSEMOVE()
-	//ON_WM_RBUTTONUP()
 	ON_WM_LBUTTONUP()
 	ON_WM_PAINT()
 
@@ -34,7 +33,8 @@ BEGIN_MESSAGE_MAP(CMFCPainterView, CView)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_FREELINE, ID_ELLIPSE, OnUpdateChangeTool)
 	ON_COMMAND(ID_LINECOLOR, &CMFCPainterView::OnLinecolor)
 	ON_COMMAND(ID_FILLCOLOR, &CMFCPainterView::OnFillcolor)
-//	ON_UPDATE_COMMAND_UI(ID_FREELINE, &CMFCPainterView::OnUpdateFreeline)
+
+//선 굵기 함수
 ON_COMMAND(ID_LT1, &CMFCPainterView::OnLt1)
 ON_COMMAND(ID_LT2, &CMFCPainterView::OnLt2)
 ON_COMMAND(ID_LT3, &CMFCPainterView::OnLt3)
@@ -42,7 +42,6 @@ ON_COMMAND(ID_LT5, &CMFCPainterView::OnLt5)
 ON_COMMAND(ID_LT7, &CMFCPainterView::OnLt7)
 ON_COMMAND(ID_LT9, &CMFCPainterView::OnLt9)
 ON_COMMAND(ID_LT11, &CMFCPainterView::OnLt11)
-//ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 // CMFCPainterView 생성/소멸
@@ -50,7 +49,6 @@ END_MESSAGE_MAP()
 CMFCPainterView::CMFCPainterView() noexcept
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
-
 }
 
 CMFCPainterView::~CMFCPainterView()
@@ -120,20 +118,21 @@ CMFCPainterDoc* CMFCPainterView::GetDocument() const // 디버그되지 않은 �
 void CMFCPainterView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	CClientDC dc(this);
-	m_CPointpoint = point;
-	m_CPointnewpoint = point;
+	m_cptPoint = point;
+	m_cptNewPoint = point;
 	SetCapture();
+	//버튼 클릭하면 시작 지점 설정(벡터에 추가)
 	if (m_nType == ID_LINE && m_bNotDrawing) {
-		m_VecLine.push_back(CLine(point, m_nLineThickness, m_ColorLine));
-		m_VecLine.push_back(CLine(point, m_nLineThickness, m_ColorLine));
+		m_vecLine.push_back(CLine(point, m_nLineThickness, m_ColorLine));
+		m_vecLine.push_back(CLine(point, m_nLineThickness, m_ColorLine));
 		m_bNotDrawing = false;
 	}
 	else if (m_nType == ID_RECTANGLE && m_bNotDrawing) {
-		m_VecRec.push_back(CRec(point.x, point.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
+		m_vecRec.push_back(CRec(point.x, point.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
 		m_bNotDrawing = false;
 	}
 	else if (m_nType == ID_ELLIPSE && m_bNotDrawing) {
-		m_VecEll.push_back(CEll(point.x, point.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
+		m_vecEll.push_back(CEll(point.x, point.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
 		m_bNotDrawing = false;
 	}
 	CView::OnLButtonDown(nFlags, point);
@@ -145,30 +144,30 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 	CClientDC dc(this);
 	CRect rect;
 	GetClientRect(&rect);
-
+	//마우스 누른 채로 드래그 할 때 없앴다가 생성하는 과정 반복
 	if ((nFlags&&MK_LBUTTON) == MK_LBUTTON) {
 		CPen pen, *pOldPen;
 		CBrush brush, *pOldBrush;
 		if (m_nType == ID_FREELINE) {
-			m_VecFreeline.push_back(CFreeline(point, m_nLineThickness, m_ColorLine));
+			m_vecFreeLine.push_back(CFreeline(point, m_nLineThickness, m_ColorLine));
 			Invalidate(false);
 		}
 		else if (m_nType == ID_LINE && !m_bNotDrawing) {
-			m_VecLine.pop_back();
-			m_VecLine.push_back(CLine(point, m_nLineThickness, m_ColorLine));
+			m_vecLine.pop_back();
+			m_vecLine.push_back(CLine(point, m_nLineThickness, m_ColorLine));
 			Invalidate(false);
 		}
 		else if (m_nType == ID_RECTANGLE&&!m_bNotDrawing) {
-			m_VecRec.pop_back();
-			m_VecRec.push_back(CRec(m_CPointpoint.x, m_CPointpoint.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
+			m_vecRec.pop_back();
+			m_vecRec.push_back(CRec(m_cptPoint.x, m_cptPoint.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
 			Invalidate(false);			
 		}
 		else if (m_nType == ID_ELLIPSE && !m_bNotDrawing) {
-			m_VecEll.pop_back();
-			m_VecEll.push_back(CEll(m_CPointpoint.x, m_CPointpoint.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
+			m_vecEll.pop_back();
+			m_vecEll.push_back(CEll(m_cptPoint.x, m_cptPoint.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
 			Invalidate(false);
 		}
-		m_CPointnewpoint = point;
+		m_cptNewPoint = point;
 	}
 	CView::OnMouseMove(nFlags, point);
 }
@@ -176,12 +175,12 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 
 void CMFCPainterView::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	ReleaseCapture();
 	CClientDC dc(this);
 	CBrush brush, *pOldBrush;
+	//마우스 뗄 때 그리고 있지 않음(bool)으로 할당
 	if (m_nType == ID_FREELINE) {
-		m_VecFreeline.push_back(CFreeline(point, m_nLineThickness, m_ColorLine,false));
+		m_vecFreeLine.push_back(CFreeline(point, m_nLineThickness, m_ColorLine,false));
 	}
 	else if (m_nType == ID_LINE) {
 		m_bNotDrawing = true;
@@ -216,56 +215,56 @@ void CMFCPainterView::OnPaint()
 	pOldBitmap = (CBitmap*)memDC.SelectObject(&bmp);
 	memDC.PatBlt(0, 0, rect.Width(), rect.Height(), WHITENESS);
 
-	for (int i = 1; i < m_VecFreeline.size(); i++)
+	for (int i = 1; i < m_vecFreeLine.size(); i++)
 	{
 		CPen pen, *pOldPen;
 		CBrush brush, *pOldBrush;
-		pen.CreatePen(PS_SOLID, m_VecFreeline[i].Getlinethickness(), m_VecFreeline[i].Getlinecolor());
+		pen.CreatePen(PS_SOLID, m_vecFreeLine[i].Getlinethickness(), m_vecFreeLine[i].Getlinecolor());
 		pOldPen = (CPen *)memDC.SelectObject(&pen);
 		if (i == 1) {
-			memDC.MoveTo(m_VecFreeline[0].Getpoint().x, m_VecFreeline[0].Getpoint().y);
-		}else if (m_VecFreeline[i-1].Getbline()) {
-			memDC.LineTo(m_VecFreeline[i].Getpoint().x, m_VecFreeline[i].Getpoint().y);
+			memDC.MoveTo(m_vecFreeLine[0].Getpoint().x, m_vecFreeLine[0].Getpoint().y);
+		}else if (m_vecFreeLine[i-1].Getbline()) {
+			memDC.LineTo(m_vecFreeLine[i].Getpoint().x, m_vecFreeLine[i].Getpoint().y);
 		}
-		memDC.MoveTo(m_VecFreeline[i].Getpoint().x, m_VecFreeline[i].Getpoint().y);
+		memDC.MoveTo(m_vecFreeLine[i].Getpoint().x, m_vecFreeLine[i].Getpoint().y);
 		
 	}
 
-	for (int j = 0; j < m_VecLine.size(); j++)
+	for (int j = 0; j < m_vecLine.size(); j++)
 	{
 		CPen pen, *pOldPen;
 		CBrush brush, *pOldBrush;
-		pen.CreatePen(PS_SOLID, m_VecLine[j].Getlinethickness(), m_VecLine[j].Getlinecolor());
+		pen.CreatePen(PS_SOLID, m_vecLine[j].Getlinethickness(), m_vecLine[j].Getlinecolor());
 		pOldPen = (CPen *)memDC.SelectObject(&pen);
 		if (j%2==0) {
-			memDC.MoveTo(m_VecLine[j].Getpoint().x, m_VecLine[j].Getpoint().y);
+			memDC.MoveTo(m_vecLine[j].Getpoint().x, m_vecLine[j].Getpoint().y);
 		}
 		else{
-			memDC.LineTo(m_VecLine[j].Getpoint().x, m_VecLine[j].Getpoint().y);
+			memDC.LineTo(m_vecLine[j].Getpoint().x, m_vecLine[j].Getpoint().y);
 		}
 	}
 
-	for (int i = 0; i < m_VecRec.size(); i++)
+	for (int i = 0; i < m_vecRec.size(); i++)
 	{
 		CPen pen, *pOldPen;
 		CBrush brush, *pOldBrush;
-		pen.CreatePen(PS_SOLID, m_VecRec[i].Getlinethickness(), m_VecRec[i].Getlinecolor());
+		pen.CreatePen(PS_SOLID, m_vecRec[i].Getlinethickness(), m_vecRec[i].Getlinecolor());
 		pOldPen = (CPen *)memDC.SelectObject(&pen);
 		//내부 색을 색칠색으로
-		brush.CreateSolidBrush(m_VecRec[i].Getfillcolor());
+		brush.CreateSolidBrush(m_vecRec[i].Getfillcolor());
 		pOldBrush = (CBrush *)memDC.SelectObject(brush);
-		memDC.Rectangle(m_VecRec[i].Getx(), m_VecRec[i].Gety(), m_VecRec[i].Getxw(), m_VecRec[i].Getyh());
+		memDC.Rectangle(m_vecRec[i].Getx(), m_vecRec[i].Gety(), m_vecRec[i].Getxw(), m_vecRec[i].Getyh());
 	}
-	for (int j = 0; j < m_VecEll.size(); j++)
+	for (int j = 0; j < m_vecEll.size(); j++)
 	{
 		CPen pen, *pOldPen;
 		CBrush brush, *pOldBrush;
-		pen.CreatePen(PS_SOLID, m_VecEll[j].Getlinethickness(), m_VecEll[j].Getlinecolor());
+		pen.CreatePen(PS_SOLID, m_vecEll[j].Getlinethickness(), m_vecEll[j].Getlinecolor());
 		pOldPen = (CPen *)memDC.SelectObject(&pen);
 		//내부 색을 색칠색으로
-		brush.CreateSolidBrush(m_VecEll[j].Getfillcolor());
+		brush.CreateSolidBrush(m_vecEll[j].Getfillcolor());
 		pOldBrush = (CBrush *)memDC.SelectObject(brush);
-		memDC.Ellipse(m_VecEll[j].Getx(), m_VecEll[j].Gety(), m_VecEll[j].Getxw(), m_VecEll[j].Getyh());
+		memDC.Ellipse(m_vecEll[j].Getx(), m_vecEll[j].Gety(), m_vecEll[j].Getxw(), m_vecEll[j].Getyh());
 	}
 
 
