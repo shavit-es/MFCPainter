@@ -42,6 +42,7 @@ ON_COMMAND(ID_LT5, &CMFCPainterView::OnLt5)
 ON_COMMAND(ID_LT7, &CMFCPainterView::OnLt7)
 ON_COMMAND(ID_LT9, &CMFCPainterView::OnLt9)
 ON_COMMAND(ID_LT11, &CMFCPainterView::OnLt11)
+//ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 // CMFCPainterView 생성/소멸
@@ -142,6 +143,9 @@ void CMFCPainterView::OnLButtonDown(UINT nFlags, CPoint point)
 void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	CClientDC dc(this);
+	CRect rect;
+	GetClientRect(&rect);
+
 	if ((nFlags&&MK_LBUTTON) == MK_LBUTTON) {
 		CPen pen, *pOldPen;
 		CBrush brush, *pOldBrush;
@@ -149,17 +153,17 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 			m_VecFreeline.push_back(CFreeline(point, m_nLineThickness, m_ColorLine));
 			Invalidate(false);
 		}
-		else if (m_nType == ID_LINE) {
+		else if (m_nType == ID_LINE && !m_bNotDrawing) {
 			m_VecLine.pop_back();
 			m_VecLine.push_back(CLine(point, m_nLineThickness, m_ColorLine));
 			Invalidate(false);
 		}
-		else if (m_nType == ID_RECTANGLE) {
+		else if (m_nType == ID_RECTANGLE&&!m_bNotDrawing) {
 			m_VecRec.pop_back();
 			m_VecRec.push_back(CRec(m_CPointpoint.x, m_CPointpoint.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
 			Invalidate(false);			
 		}
-		else if (m_nType == ID_ELLIPSE) {
+		else if (m_nType == ID_ELLIPSE && !m_bNotDrawing) {
 			m_VecEll.pop_back();
 			m_VecEll.push_back(CEll(m_CPointpoint.x, m_CPointpoint.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
 			Invalidate(false);
@@ -300,3 +304,5 @@ void CMFCPainterView::OnLt5() { m_nLineThickness = 5; }
 void CMFCPainterView::OnLt7() { m_nLineThickness = 7; }
 void CMFCPainterView::OnLt9() { m_nLineThickness = 9; }
 void CMFCPainterView::OnLt11() { m_nLineThickness = 11; }
+
+
