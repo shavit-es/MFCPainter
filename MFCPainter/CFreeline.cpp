@@ -16,3 +16,15 @@ CFreeline::CFreeline(CPoint tpoint, int tlinethickness, COLORREF tlinecolor)
 	linecolor = tlinecolor;
 	bline = true;
 }
+
+CFreeline::CFreeline(CFreeline & other)
+{
+	point = other.Getpoint();
+	linethickness = other.Getlinethickness();
+	linecolor = other.Getlinecolor();
+	bline = other.Getbline();
+}
+
+CFreeline::~CFreeline()
+{
+}

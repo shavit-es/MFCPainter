@@ -9,7 +9,7 @@
 #include "CRec.h"
 #include "CEll.h"
 #include "CFreeline.h"
-#include "CLine.h"
+#include "CStraightLine.h"
 
 using namespace std;
 
@@ -26,10 +26,10 @@ public:
 	// 작업입니다.
 public:
 	CPoint m_cptPoint, m_cptNewPoint;
+	vector<CFreeline> m_vecElement;
 	vector<CRec> m_vecRec;
 	vector<CEll> m_vecEll;
-	vector<CFreeline> m_vecFreeLine;
-	vector<CLine> m_vecLine;
+	vector<CStraightLine> m_veCStraightLine;
 	int m_nType = ID_FREELINE;
 	int m_nLineThickness = 1;
 	bool m_bNotDrawing = true;

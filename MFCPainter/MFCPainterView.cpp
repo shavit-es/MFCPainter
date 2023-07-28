@@ -122,9 +122,12 @@ void CMFCPainterView::OnLButtonDown(UINT nFlags, CPoint point)
 	m_cptNewPoint = point;
 	SetCapture();
 	//버튼 클릭하면 시작 지점 설정(벡터에 추가)
-	if (m_nType == ID_LINE && m_bNotDrawing) {
-		m_vecLine.push_back(CLine(point, m_nLineThickness, m_ColorLine));
-		m_vecLine.push_back(CLine(point, m_nLineThickness, m_ColorLine));
+	if (m_nType == ID_FREELINE && m_bNotDrawing) {
+		m_vecElement.push_back(CFreeline(point, m_nLineThickness, m_ColorLine, false));
+	}
+	else if (m_nType == ID_LINE && m_bNotDrawing) {
+		m_veCStraightLine.push_back(CStraightLine(point, m_nLineThickness, m_ColorLine));
+		m_veCStraightLine.push_back(CStraightLine(point, m_nLineThickness, m_ColorLine));
 		m_bNotDrawing = false;
 	}
 	else if (m_nType == ID_RECTANGLE && m_bNotDrawing) {
@@ -149,12 +152,12 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 		CPen pen, *pOldPen;
 		CBrush brush, *pOldBrush;
 		if (m_nType == ID_FREELINE) {
-			m_vecFreeLine.push_back(CFreeline(point, m_nLineThickness, m_ColorLine));
+			m_vecElement.push_back(CFreeline(point, m_nLineThickness, m_ColorLine));
 			Invalidate(false);
 		}
 		else if (m_nType == ID_LINE && !m_bNotDrawing) {
-			m_vecLine.pop_back();
-			m_vecLine.push_back(CLine(point, m_nLineThickness, m_ColorLine));
+			m_veCStraightLine.pop_back();
+			m_veCStraightLine.push_back(CStraightLine(point, m_nLineThickness, m_ColorLine));
 			Invalidate(false);
 		}
 		else if (m_nType == ID_RECTANGLE&&!m_bNotDrawing) {
@@ -180,7 +183,7 @@ void CMFCPainterView::OnLButtonUp(UINT nFlags, CPoint point)
 	CBrush brush, *pOldBrush;
 	//마우스 뗄 때 그리고 있지 않음(bool)으로 할당
 	if (m_nType == ID_FREELINE) {
-		m_vecFreeLine.push_back(CFreeline(point, m_nLineThickness, m_ColorLine,false));
+		m_vecElement.push_back(CFreeline(point, m_nLineThickness, m_ColorLine,false));
 	}
 	else if (m_nType == ID_LINE) {
 		m_bNotDrawing = true;
@@ -215,32 +218,22 @@ void CMFCPainterView::OnPaint()
 	pOldBitmap = (CBitmap*)memDC.SelectObject(&bmp);
 	memDC.PatBlt(0, 0, rect.Width(), rect.Height(), WHITENESS);
 
-	for (int i = 1; i < m_vecFreeLine.size(); i++)
+	for (int i = 0; i < m_vecElement.size(); i++)
 	{
-		CPen pen, *pOldPen;
-		CBrush brush, *pOldBrush;
-		pen.CreatePen(PS_SOLID, m_vecFreeLine[i].Getlinethickness(), m_vecFreeLine[i].Getlinecolor());
-		pOldPen = (CPen *)memDC.SelectObject(&pen);
-		if (i == 1) {
-			memDC.MoveTo(m_vecFreeLine[0].Getpoint().x, m_vecFreeLine[0].Getpoint().y);
-		}else if (m_vecFreeLine[i-1].Getbline()) {
-			memDC.LineTo(m_vecFreeLine[i].Getpoint().x, m_vecFreeLine[i].Getpoint().y);
-		}
-		memDC.MoveTo(m_vecFreeLine[i].Getpoint().x, m_vecFreeLine[i].Getpoint().y);
-		
+		m_vecElement[i].Draw(m_vecElement[i], memDC);
 	}
 
-	for (int j = 0; j < m_vecLine.size(); j++)
+	for (int j = 0; j < m_veCStraightLine.size(); j++)
 	{
 		CPen pen, *pOldPen;
 		CBrush brush, *pOldBrush;
-		pen.CreatePen(PS_SOLID, m_vecLine[j].Getlinethickness(), m_vecLine[j].Getlinecolor());
+		pen.CreatePen(PS_SOLID, m_veCStraightLine[j].Getlinethickness(), m_veCStraightLine[j].Getlinecolor());
 		pOldPen = (CPen *)memDC.SelectObject(&pen);
 		if (j%2==0) {
-			memDC.MoveTo(m_vecLine[j].Getpoint().x, m_vecLine[j].Getpoint().y);
+			memDC.MoveTo(m_veCStraightLine[j].Getpoint().x, m_veCStraightLine[j].Getpoint().y);
 		}
 		else{
-			memDC.LineTo(m_vecLine[j].Getpoint().x, m_vecLine[j].Getpoint().y);
+			memDC.LineTo(m_veCStraightLine[j].Getpoint().x, m_veCStraightLine[j].Getpoint().y);
 		}
 	}
 

@@ -1,8 +1,9 @@
 #pragma once
 #include "pch.h"
 #include "framework.h"
+#include "CElement.h"
 
-class CEll
+class CEll : public CElement
 {
 private:
 	LONG x, y, xw, yh;
@@ -12,7 +13,9 @@ private:
 
 public:
 	CEll::CEll(LONG tx, LONG ty, LONG txw, LONG tyh, int tlinethickness, COLORREF tlinecolor, COLORREF tfillcolor);
+	CEll::CEll(CEll & other);
 
+	virtual ~CEll();
 
 	LONG Getx() {
 		return x;
