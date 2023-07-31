@@ -117,29 +117,31 @@ CMFCPainterDoc* CMFCPainterView::GetDocument() const // 디버그되지 않은 �
 
 void CMFCPainterView::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	CClientDC dc(this);
-	m_cptPoint = point;
-	m_cptNewPoint = point;
-	SetCapture();
-	//버튼 클릭하면 시작 지점 설정(벡터에 추가)
-	if (m_nType == ID_FREELINE && m_bNotDrawing) {
-		m_vecElement.push_back(new CFreeline(point, m_nLineThickness, m_ColorLine, false));
-		m_bNotDrawing = false;
-	}
-	else if (m_nType == ID_LINE && m_bNotDrawing) {
-		m_vecElement.push_back(new CStraightLine(point, m_nLineThickness, m_ColorLine, true));
-		m_vecElement.push_back(new CStraightLine(point, m_nLineThickness, m_ColorLine, true));
-		m_bNotDrawing = false;
-	}
-	else if (m_nType == ID_RECTANGLE && m_bNotDrawing) {
-		m_vecElement.push_back(new CRec(point.x, point.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
-		m_bNotDrawing = false;
-	}
-	else if (m_nType == ID_ELLIPSE && m_bNotDrawing) {
-		m_vecElement.push_back(new CEll(point.x, point.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
-		m_bNotDrawing = false;
-	}
-	CView::OnLButtonDown(nFlags, point);
+	do {
+		CClientDC dc(this);
+		m_cptPoint = point;
+		m_cptNewPoint = point;
+		SetCapture();
+		//버튼 클릭하면 시작 지점 설정(벡터에 추가)
+		if (m_nType == ID_FREELINE && m_bNotDrawing) {
+			m_vecElement.push_back(new CFreeline(point, m_nLineThickness, m_ColorLine, false));
+			m_bNotDrawing = false;
+		}
+		else if (m_nType == ID_LINE && m_bNotDrawing) {
+			m_vecElement.push_back(new CStraightLine(point, m_nLineThickness, m_ColorLine, true));
+			m_vecElement.push_back(new CStraightLine(point, m_nLineThickness, m_ColorLine, true));
+			m_bNotDrawing = false;
+		}
+		else if (m_nType == ID_RECTANGLE && m_bNotDrawing) {
+			m_vecElement.push_back(new CRec(point.x, point.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
+			m_bNotDrawing = false;
+		}
+		else if (m_nType == ID_ELLIPSE && m_bNotDrawing) {
+			m_vecElement.push_back(new CEll(point.x, point.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
+			m_bNotDrawing = false;
+		}
+		CView::OnLButtonDown(nFlags, point);
+	}while (false);
 }
 
 
@@ -180,25 +182,27 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 
 void CMFCPainterView::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	ReleaseCapture();
-	CClientDC dc(this);
-	CBrush brush, *pOldBrush;
-	//마우스 뗄 때 그리고 있지 않음(bool)으로 할당
-	if (m_nType == ID_FREELINE) {
-		m_vecElement.push_back(new CFreeline(point, m_nLineThickness, m_ColorLine,false));
-		m_bNotDrawing = true;
-	}
-	else if (m_nType == ID_LINE) {
-		m_bNotDrawing = true;
-	}
-	else if (m_nType == ID_RECTANGLE) {
-		m_bNotDrawing = true;
-	}
-	else if (m_nType == ID_ELLIPSE) {
-		m_bNotDrawing = true;
-	}
-	Invalidate(false);
-	CView::OnLButtonUp(nFlags, point);
+	do {
+		ReleaseCapture();
+		CClientDC dc(this);
+		CBrush brush, *pOldBrush;
+		//마우스 뗄 때 그리고 있지 않음(bool)으로 할당
+		if (m_nType == ID_FREELINE) {
+			m_vecElement.push_back(new CFreeline(point, m_nLineThickness, m_ColorLine, false));
+			m_bNotDrawing = true;
+		}
+		else if (m_nType == ID_LINE) {
+			m_bNotDrawing = true;
+		}
+		else if (m_nType == ID_RECTANGLE) {
+			m_bNotDrawing = true;
+		}
+		else if (m_nType == ID_ELLIPSE) {
+			m_bNotDrawing = true;
+		}
+		Invalidate(false);
+		CView::OnLButtonUp(nFlags, point);
+	} while (false);
 }
 
 
@@ -206,51 +210,56 @@ void CMFCPainterView::OnLButtonUp(UINT nFlags, CPoint point)
 
 void CMFCPainterView::OnPaint()
 {
-	CPaintDC dc(this); 	
-	CDC *pDC = &dc;
+	do {
+		CPaintDC dc(this);
+		CDC *pDC = &dc;
 
-	CRect rect;
-	GetClientRect(&rect);
+		CRect rect;
+		GetClientRect(&rect);
 
-	CDC memDC;
-	CBitmap* pOldBitmap;
-	CBitmap bmp;
+		CDC memDC;
+		CBitmap* pOldBitmap;
+		CBitmap bmp;
 
-	memDC.CreateCompatibleDC(pDC);
-	bmp.CreateCompatibleBitmap(pDC, rect.Width(), rect.Height());
-	pOldBitmap = (CBitmap*)memDC.SelectObject(&bmp);
-	memDC.PatBlt(0, 0, rect.Width(), rect.Height(), WHITENESS);
+		memDC.CreateCompatibleDC(pDC);
+		bmp.CreateCompatibleBitmap(pDC, rect.Width(), rect.Height());
+		pOldBitmap = (CBitmap*)memDC.SelectObject(&bmp);
+		memDC.PatBlt(0, 0, rect.Width(), rect.Height(), WHITENESS);
 
-	for (auto elem : m_vecElement)
-	{
-		elem->Draw(memDC);
-	}
+		for (auto elem : m_vecElement)
+		{
+			elem->Draw(memDC);
+		}
 
-	pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &memDC, 0, 0, SRCCOPY);
+		pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &memDC, 0, 0, SRCCOPY);
 
-	memDC.SelectObject(pOldBitmap);
-	memDC.DeleteDC();
-	bmp.DeleteObject();
-
+		memDC.SelectObject(pOldBitmap);
+		memDC.DeleteDC();
+		bmp.DeleteObject();
+	} while (false);
 }
 
 
 void CMFCPainterView::OnLinecolor()
 {
-	CColorDialog dlg;
-	if (dlg.DoModal() == IDOK) {
-		m_ColorLine = dlg.GetColor(); //선택한 색을 COLORREF로 return
-		m_ColorLineXor = (RGB(GetRValue(m_ColorLine) ^ 255, GetGValue(m_ColorLine) ^ 255, GetBValue(m_ColorLine) ^ 255));
-	}
+	do {
+		CColorDialog dlg;
+		if (dlg.DoModal() == IDOK) {
+			m_ColorLine = dlg.GetColor(); //선택한 색을 COLORREF로 return
+			m_ColorLineXor = (RGB(GetRValue(m_ColorLine) ^ 255, GetGValue(m_ColorLine) ^ 255, GetBValue(m_ColorLine) ^ 255));
+		}
+	} while (false);
 }
 
 
 void CMFCPainterView::OnFillcolor()
 {
-	CColorDialog dlg;
-	if (dlg.DoModal() == IDOK) {
-		m_ColorFill = dlg.GetColor();
-	}
+	do {
+		CColorDialog dlg;
+		if (dlg.DoModal() == IDOK) {
+			m_ColorFill = dlg.GetColor();
+		}
+	} while (false);
 }
 
 

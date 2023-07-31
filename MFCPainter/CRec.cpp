@@ -25,3 +25,36 @@ CRec::CRec(CRec & other)
 	linecolor = other.Getlinecolor();
 	fillcolor = other.Getfillcolor();
 }
+
+LONG CRec::Getx() {
+	return x;
+}
+LONG CRec::Gety() {
+	return y;
+}
+LONG CRec::Getxw() {
+	return xw;
+}
+LONG CRec::Getyh() {
+	return yh;
+}
+int CRec::Getlinethickness() {
+	return linethickness;
+}
+COLORREF CRec::Getlinecolor() {
+	return linecolor;
+}
+COLORREF CRec::Getfillcolor() {
+	return fillcolor;
+}
+
+void CRec::Draw(CDC &memDC) {
+	CPen pen, *pOldPen;
+	CBrush brush, *pOldBrush;
+	pen.CreatePen(PS_SOLID, Getlinethickness(), Getlinecolor());
+	pOldPen = (CPen *)memDC.SelectObject(&pen);
+	//내부 색을 색칠색으로
+	brush.CreateSolidBrush(Getfillcolor());
+	pOldBrush = (CBrush *)memDC.SelectObject(brush);
+	memDC.Rectangle(Getx(), Gety(), Getxw(), Getyh());
+}

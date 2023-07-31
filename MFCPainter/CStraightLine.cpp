@@ -23,3 +23,29 @@ CStraightLine::CStraightLine(CStraightLine & other)
 CStraightLine::~CStraightLine()
 {
 }
+
+int CStraightLine::Getlinethickness() {
+	return linethickness;
+};
+COLORREF CStraightLine::Getlinecolor() {
+	return linecolor;
+}
+CPoint CStraightLine::Getpoint() {
+	return point;
+}
+bool CStraightLine::Getbstart() {
+	return bstart;
+}
+
+void CStraightLine::Draw(CDC &memDC) {
+	CPen pen, *pOldPen;
+	CBrush brush, *pOldBrush;
+	pen.CreatePen(PS_SOLID, Getlinethickness(), Getlinecolor());
+	pOldPen = (CPen *)memDC.SelectObject(&pen);
+	if (Getbstart()) {
+		memDC.MoveTo(Getpoint());
+	}
+	else {
+		memDC.LineTo(Getpoint());
+	}
+}

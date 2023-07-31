@@ -26,3 +26,38 @@ CEll::CEll(CEll & other)
 CEll::~CEll()
 {
 }
+
+LONG CEll::Getx()
+{
+	return x;
+}
+
+LONG CEll::Gety() {
+	return y;
+}
+LONG CEll::Getxw() {
+	return xw;
+}
+LONG CEll::Getyh() {
+	return yh;
+}
+int CEll::Getlinethickness() {
+	return linethickness;
+};
+COLORREF CEll::Getlinecolor() {
+	return linecolor;
+}
+COLORREF CEll::Getfillcolor() {
+	return fillcolor;
+}
+
+void CEll::Draw(CDC &memDC) {
+	CPen pen, *pOldPen;
+	CBrush brush, *pOldBrush;
+	pen.CreatePen(PS_SOLID, Getlinethickness(), Getlinecolor());
+	pOldPen = (CPen *)memDC.SelectObject(&pen);
+	//내부 색을 색칠색으로
+	brush.CreateSolidBrush(Getfillcolor());
+	pOldBrush = (CBrush *)memDC.SelectObject(brush);
+	memDC.Ellipse(Getx(), Gety(), Getxw(), Getyh());
+}

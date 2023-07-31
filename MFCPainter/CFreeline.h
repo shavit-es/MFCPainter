@@ -18,30 +18,12 @@ public:
 	CFreeline::CFreeline(CPoint tpoint, int linethickness, COLORREF linecolor);
 	CFreeline(CFreeline& other);
 	virtual ~CFreeline();
-	int Getlinethickness() {
-		return linethickness;
-	};
-	COLORREF Getlinecolor() {
-		return linecolor;
-	}
+	int Getlinethickness();
+	COLORREF Getlinecolor();
+	CPoint Getpoint();
+	bool Getbline();
 
-	CPoint Getpoint() {
-		return point;
-	}
+	void Draw(CDC &memDC);
 
-	bool Getbline() {
-		return bline;
-	}
-
-	void Draw(CDC &memDC) {
-		CPen pen, *pOldPen;
-		CBrush brush, *pOldBrush;
-		pen.CreatePen(PS_SOLID, Getlinethickness(), Getlinecolor());
-		pOldPen = (CPen *)memDC.SelectObject(&pen);
-		if (!Getbline()) {
-			memDC.MoveTo(Getpoint().x, Getpoint().y);
-		}
-		memDC.LineTo(Getpoint().x, Getpoint().y);
-	}
 };
 

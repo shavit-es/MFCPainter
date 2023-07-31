@@ -28,3 +28,29 @@ CFreeline::CFreeline(CFreeline & other)
 CFreeline::~CFreeline()
 {
 }
+
+int CFreeline::Getlinethickness() {
+	return linethickness;
+};
+COLORREF CFreeline::Getlinecolor() {
+	return linecolor;
+}
+
+CPoint CFreeline::Getpoint() {
+	return point;
+}
+
+bool CFreeline::Getbline() {
+	return bline;
+}
+
+void CFreeline::Draw(CDC &memDC) {
+	CPen pen, *pOldPen;
+	CBrush brush, *pOldBrush;
+	pen.CreatePen(PS_SOLID, Getlinethickness(), Getlinecolor());
+	pOldPen = (CPen *)memDC.SelectObject(&pen);
+	if (!Getbline()) {
+		memDC.MoveTo(Getpoint().x, Getpoint().y);
+	}
+	memDC.LineTo(Getpoint().x, Getpoint().y);
+}

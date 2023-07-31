@@ -17,29 +17,12 @@ public:
 	CStraightLine::CStraightLine(CPoint tpoint, int tlinethickness, COLORREF tlinecolor, bool bstart);
 	CStraightLine(CStraightLine& other);
 	virtual ~CStraightLine();
-	int Getlinethickness() {
-		return linethickness;
-	};
-	COLORREF Getlinecolor() {
-		return linecolor;
-	}
-	CPoint Getpoint() {
-		return point;
-	}
-	void Draw(CDC &memDC) {
-		CPen pen, *pOldPen;
-		CBrush brush, *pOldBrush;
-		pen.CreatePen(PS_SOLID, Getlinethickness(), Getlinecolor());
-		pOldPen = (CPen *)memDC.SelectObject(&pen);
-		if (Getbstart()) {
-			memDC.MoveTo(Getpoint());
-		}
-		else {
-			memDC.LineTo(Getpoint());
-		}
-	}
+	
+	int Getlinethickness();
+	COLORREF Getlinecolor();
+	CPoint Getpoint();
+	bool Getbstart();
 
-	bool Getbstart() {
-		return bstart;
-	}
+	void Draw(CDC &memDC);
+
 };
