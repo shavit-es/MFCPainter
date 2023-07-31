@@ -8,6 +8,7 @@ class CFreeline : public CElement
 {
 protected:
 	CPoint point;
+
 	int linethickness;
 	COLORREF linecolor;
 	bool bline;
