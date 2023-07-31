@@ -29,7 +29,6 @@ public:
 	vector<CElement*> m_vecElement;
 	vector<CRec> m_vecRec;
 	vector<CEll> m_vecEll;
-	vector<CStraightLine> m_veCStraightLine;
 	int m_nType = ID_FREELINE;
 	int m_nLineThickness = 1;
 	bool m_bNotDrawing = true;

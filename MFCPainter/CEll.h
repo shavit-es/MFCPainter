@@ -38,5 +38,16 @@ public:
 	COLORREF Getfillcolor() {
 		return fillcolor;
 	}
+
+	void Draw(CDC &memDC) {
+		CPen pen, *pOldPen;
+		CBrush brush, *pOldBrush;
+		pen.CreatePen(PS_SOLID, Getlinethickness(), Getlinecolor());
+		pOldPen = (CPen *)memDC.SelectObject(&pen);
+		//내부 색을 색칠색으로
+		brush.CreateSolidBrush(Getfillcolor());
+		pOldBrush = (CBrush *)memDC.SelectObject(brush);
+		memDC.Ellipse(Getx(), Gety(), Getxw(),Getyh());
+	}
 };
 

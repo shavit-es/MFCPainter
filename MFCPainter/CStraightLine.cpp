@@ -5,11 +5,12 @@ CStraightLine::CStraightLine()
 {
 }
 
-CStraightLine::CStraightLine(CPoint tpoint, int tlinethickness, COLORREF tlinecolor)
+CStraightLine::CStraightLine(CPoint tpoint, int tlinethickness, COLORREF tlinecolor, bool tbstart)
 {
 	point = tpoint;
 	linethickness = tlinethickness;
 	linecolor = tlinecolor;
+	bstart = tbstart;
 }
 
 CStraightLine::CStraightLine(CStraightLine & other)
