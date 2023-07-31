@@ -124,6 +124,7 @@ void CMFCPainterView::OnLButtonDown(UINT nFlags, CPoint point)
 	//버튼 클릭하면 시작 지점 설정(벡터에 추가)
 	if (m_nType == ID_FREELINE && m_bNotDrawing) {
 		m_vecElement.push_back(new CFreeline(point, m_nLineThickness, m_ColorLine, false));
+		m_bNotDrawing = false;
 	}
 	else if (m_nType == ID_LINE && m_bNotDrawing) {
 		m_vecElement.push_back(new CStraightLine(point, m_nLineThickness, m_ColorLine, true));
@@ -147,11 +148,12 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 	CClientDC dc(this);
 	CRect rect;
 	GetClientRect(&rect);
+
 	//마우스 누른 채로 드래그 할 때 없앴다가 생성하는 과정 반복
 	if ((nFlags&&MK_LBUTTON) == MK_LBUTTON) {
 		CPen pen, *pOldPen;
 		CBrush brush, *pOldBrush;
-		if (m_nType == ID_FREELINE) {
+		if (m_nType == ID_FREELINE && !m_bNotDrawing) {
 			m_vecElement.push_back(new CFreeline(point, m_nLineThickness, m_ColorLine));
 			Invalidate(false);
 		}
@@ -184,6 +186,7 @@ void CMFCPainterView::OnLButtonUp(UINT nFlags, CPoint point)
 	//마우스 뗄 때 그리고 있지 않음(bool)으로 할당
 	if (m_nType == ID_FREELINE) {
 		m_vecElement.push_back(new CFreeline(point, m_nLineThickness, m_ColorLine,false));
+		m_bNotDrawing = true;
 	}
 	else if (m_nType == ID_LINE) {
 		m_bNotDrawing = true;
