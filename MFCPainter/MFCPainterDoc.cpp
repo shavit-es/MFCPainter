@@ -12,6 +12,8 @@
 
 #include "MFCPainterDoc.h"
 
+#include "MainFrm.h"
+#include "MFCPainterView.h"
 #include <propkey.h>
 
 #ifdef _DEBUG
@@ -56,13 +58,23 @@ BOOL CMFCPainterDoc::OnNewDocument()
 
 void CMFCPainterDoc::Serialize(CArchive& ar)
 {
+	CMainFrame *pFrame = (CMainFrame*)AfxGetMainWnd();
+	CMFCPainterView *pView = (CMFCPainterView*)pFrame->GetActiveView();
 	if (ar.IsStoring())
 	{
-
+		ar << pView->m_vecElement.size();
+		for (int i = 0; i < pView->m_vecElement.size();i++) {
+			ar << pView->m_vecElement[i];
+		}
 	}
 	else
 	{
+		int nvecSize;
+		ar >> nvecSize;
 
+		for (int i = 0; i < nvecSize;i++) {
+
+		}
 	}
 }
 
