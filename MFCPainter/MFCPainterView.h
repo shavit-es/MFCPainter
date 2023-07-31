@@ -26,7 +26,7 @@ public:
 	// 작업입니다.
 public:
 	CPoint m_cptPoint, m_cptNewPoint;
-	vector<CElement> m_vecElement;
+	vector<CElement*> m_vecElement;
 	vector<CRec> m_vecRec;
 	vector<CEll> m_vecEll;
 	vector<CStraightLine> m_veCStraightLine;

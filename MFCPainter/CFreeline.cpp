@@ -3,18 +3,18 @@
 
 CFreeline::CFreeline(CPoint tpoint, int tlinethickness, COLORREF tlinecolor, bool tbline)
 {
-	point = tpoint;
-	linethickness = tlinethickness;
-	linecolor = tlinecolor;
-	bline = tbline;
+	this->point = tpoint;
+	this->linethickness = tlinethickness;
+	this->linecolor = tlinecolor;
+	this->bline = tbline;
 }
 
 CFreeline::CFreeline(CPoint tpoint, int tlinethickness, COLORREF tlinecolor)
 {
-	point = tpoint;
-	linethickness = tlinethickness;
-	linecolor = tlinecolor;
-	bline = true;
+	this->point = tpoint;
+	this->linethickness = tlinethickness;
+	this->linecolor = tlinecolor;
+	this->bline = true;
 }
 
 CFreeline::CFreeline(CFreeline & other)

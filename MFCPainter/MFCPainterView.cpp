@@ -123,7 +123,7 @@ void CMFCPainterView::OnLButtonDown(UINT nFlags, CPoint point)
 	SetCapture();
 	//버튼 클릭하면 시작 지점 설정(벡터에 추가)
 	if (m_nType == ID_FREELINE && m_bNotDrawing) {
-		m_vecElement.push_back(CFreeline(point, m_nLineThickness, m_ColorLine, false));
+		m_vecElement.push_back(new CFreeline(point, m_nLineThickness, m_ColorLine, false));
 	}
 	else if (m_nType == ID_LINE && m_bNotDrawing) {
 		m_veCStraightLine.push_back(CStraightLine(point, m_nLineThickness, m_ColorLine));
@@ -152,7 +152,7 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 		CPen pen, *pOldPen;
 		CBrush brush, *pOldBrush;
 		if (m_nType == ID_FREELINE) {
-			m_vecElement.push_back(CFreeline(point, m_nLineThickness, m_ColorLine));
+			m_vecElement.push_back(new CFreeline(point, m_nLineThickness, m_ColorLine));
 			Invalidate(false);
 		}
 		else if (m_nType == ID_LINE && !m_bNotDrawing) {
@@ -183,7 +183,7 @@ void CMFCPainterView::OnLButtonUp(UINT nFlags, CPoint point)
 	CBrush brush, *pOldBrush;
 	//마우스 뗄 때 그리고 있지 않음(bool)으로 할당
 	if (m_nType == ID_FREELINE) {
-		m_vecElement.push_back(CFreeline(point, m_nLineThickness, m_ColorLine,false));
+		m_vecElement.push_back(new CFreeline(point, m_nLineThickness, m_ColorLine,false));
 	}
 	else if (m_nType == ID_LINE) {
 		m_bNotDrawing = true;
@@ -218,9 +218,9 @@ void CMFCPainterView::OnPaint()
 	pOldBitmap = (CBitmap*)memDC.SelectObject(&bmp);
 	memDC.PatBlt(0, 0, rect.Width(), rect.Height(), WHITENESS);
 
-	for (int i = 0; i < m_vecElement.size(); i++)
+	for (auto elem : m_vecElement)
 	{
-		m_vecElement[i].Draw(memDC);
+		elem->Draw(memDC);
 	}
 
 	for (int j = 0; j < m_veCStraightLine.size(); j++)
