@@ -14,7 +14,7 @@ private:
 public:
 	CEll::CEll(LONG tx, LONG ty, LONG txw, LONG tyh, int tlinethickness, COLORREF tlinecolor, COLORREF tfillcolor);
 	CEll::CEll(CEll & other);
-
+	CEll::CEll();
 	virtual ~CEll();
 	LONG Getx();
 	LONG Gety();
@@ -24,5 +24,9 @@ public:
 	COLORREF Getlinecolor();
 	COLORREF Getfillcolor();
 	void Draw(CDC &memDC);
+	virtual void Serialize(CArchive& ar);
+
+protected:
+	DECLARE_SERIAL(CEll);
 };
 

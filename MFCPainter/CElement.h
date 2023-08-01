@@ -3,6 +3,7 @@
 
 class CElement :public CObject
 {
+	DECLARE_SERIAL(CElement);
 private:
 
 
@@ -12,6 +13,8 @@ public:
 	CElement(CElement& other);
 
 	virtual void Draw(CDC &memCDC) {};
+	virtual void Serialize(CArchive& ar) {};
 
+	
 };
 

@@ -124,20 +124,20 @@ void CMFCPainterView::OnLButtonDown(UINT nFlags, CPoint point)
 		SetCapture();
 		//버튼 클릭하면 시작 지점 설정(벡터에 추가)
 		if (m_nType == ID_FREELINE && m_bNotDrawing) {
-			m_vecElement.push_back(new CFreeline(point, m_nLineThickness, m_ColorLine, false));
+			m_vecpElement.push_back(new CFreeline(point, m_nLineThickness, m_ColorLine, false));
 			m_bNotDrawing = false;
 		}
 		else if (m_nType == ID_LINE && m_bNotDrawing) {
-			m_vecElement.push_back(new CStraightLine(point, m_nLineThickness, m_ColorLine, true));
-			m_vecElement.push_back(new CStraightLine(point, m_nLineThickness, m_ColorLine, true));
+			m_vecpElement.push_back(new CStraightLine(point, m_nLineThickness, m_ColorLine, true));
+			m_vecpElement.push_back(new CStraightLine(point, m_nLineThickness, m_ColorLine, true));
 			m_bNotDrawing = false;
 		}
 		else if (m_nType == ID_RECTANGLE && m_bNotDrawing) {
-			m_vecElement.push_back(new CRec(point.x, point.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
+			m_vecpElement.push_back(new CRec(point.x, point.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
 			m_bNotDrawing = false;
 		}
 		else if (m_nType == ID_ELLIPSE && m_bNotDrawing) {
-			m_vecElement.push_back(new CEll(point.x, point.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
+			m_vecpElement.push_back(new CEll(point.x, point.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
 			m_bNotDrawing = false;
 		}
 		CView::OnLButtonDown(nFlags, point);
@@ -156,22 +156,22 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 		CPen pen, *pOldPen;
 		CBrush brush, *pOldBrush;
 		if (m_nType == ID_FREELINE && !m_bNotDrawing) {
-			m_vecElement.push_back(new CFreeline(point, m_nLineThickness, m_ColorLine));
+			m_vecpElement.push_back(new CFreeline(point, m_nLineThickness, m_ColorLine));
 			Invalidate(false);
 		}
 		else if (m_nType == ID_LINE && !m_bNotDrawing) {
-			m_vecElement.pop_back();
-			m_vecElement.push_back(new CStraightLine(point, m_nLineThickness, m_ColorLine, false));
+			m_vecpElement.pop_back();
+			m_vecpElement.push_back(new CStraightLine(point, m_nLineThickness, m_ColorLine, false));
 			Invalidate(false);
 		}
 		else if (m_nType == ID_RECTANGLE&&!m_bNotDrawing) {
-			m_vecElement.pop_back();
-			m_vecElement.push_back(new CRec(m_cptPoint.x, m_cptPoint.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
+			m_vecpElement.pop_back();
+			m_vecpElement.push_back(new CRec(m_cptPoint.x, m_cptPoint.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
 			Invalidate(false);			
 		}
 		else if (m_nType == ID_ELLIPSE && !m_bNotDrawing) {
-			m_vecElement.pop_back();
-			m_vecElement.push_back(new CEll(m_cptPoint.x, m_cptPoint.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
+			m_vecpElement.pop_back();
+			m_vecpElement.push_back(new CEll(m_cptPoint.x, m_cptPoint.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
 			Invalidate(false);
 		}
 		m_cptNewPoint = point;
@@ -188,7 +188,7 @@ void CMFCPainterView::OnLButtonUp(UINT nFlags, CPoint point)
 		CBrush brush, *pOldBrush;
 		//마우스 뗄 때 그리고 있지 않음(bool)으로 할당
 		if (m_nType == ID_FREELINE) {
-			m_vecElement.push_back(new CFreeline(point, m_nLineThickness, m_ColorLine, false));
+			m_vecpElement.push_back(new CFreeline(point, m_nLineThickness, m_ColorLine, false));
 			m_bNotDrawing = true;
 		}
 		else if (m_nType == ID_LINE) {
@@ -226,7 +226,7 @@ void CMFCPainterView::OnPaint()
 		pOldBitmap = (CBitmap*)memDC.SelectObject(&bmp);
 		memDC.PatBlt(0, 0, rect.Width(), rect.Height(), WHITENESS);
 
-		for (auto elem : m_vecElement)
+		for (auto elem : m_vecpElement)
 		{
 			elem->Draw(memDC);
 		}

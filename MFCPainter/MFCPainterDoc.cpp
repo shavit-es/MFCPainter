@@ -47,7 +47,7 @@ BOOL CMFCPainterDoc::OnNewDocument()
 	
 	// TODO: 여기에 재초기화 코드를 추가합니다.
 	// SDI 문서는 이 문서를 다시 사용합니다.
-	
+
 	return TRUE;
 }
 
@@ -62,18 +62,21 @@ void CMFCPainterDoc::Serialize(CArchive& ar)
 	CMFCPainterView *pView = (CMFCPainterView*)pFrame->GetActiveView();
 	if (ar.IsStoring())
 	{
-		ar << pView->m_vecElement.size();
-		for (int i = 0; i < pView->m_vecElement.size();i++) {
-			ar << pView->m_vecElement[i];
+		ar << pView->m_vecpElement.size();
+		for (int i = 0; i < pView->m_vecpElement.size();i++) {
+			pView->m_vecpElement[i]->Serialize(ar);
 		}
 	}
 	else
 	{
 		int nvecSize;
+		CElement ele;
+		
 		ar >> nvecSize;
-
 		for (int i = 0; i < nvecSize;i++) {
-
+			CElement* ele = new CElement();
+			ele->Serialize(ar);
+			pView->m_vecpElement.push_back(ele);
 		}
 	}
 }

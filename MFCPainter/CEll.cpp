@@ -23,6 +23,10 @@ CEll::CEll(CEll & other)
 	fillcolor = other.Getfillcolor();
 }
 
+CEll::CEll()
+{
+}
+
 CEll::~CEll()
 {
 }
@@ -60,4 +64,31 @@ void CEll::Draw(CDC &memDC) {
 	brush.CreateSolidBrush(Getfillcolor());
 	pOldBrush = (CBrush *)memDC.SelectObject(brush);
 	memDC.Ellipse(Getx(), Gety(), Getxw(), Getyh());
+}
+
+IMPLEMENT_SERIAL(CEll, CObject, 1);
+
+void CEll::Serialize(CArchive & ar)
+{
+	{
+		CObject::Serialize(ar);
+		if (ar.IsStoring()) {
+			ar << x;
+			ar << y;
+			ar << xw;
+			ar << yh;
+			ar << linethickness;
+			ar << linecolor;
+			ar << fillcolor;
+		}
+		else {
+			ar >> x;
+			ar >> y;
+			ar >> xw;
+			ar >> yh;
+			ar >> linethickness;
+			ar >> linecolor;
+			ar >> fillcolor;
+		}
+	}
 }
