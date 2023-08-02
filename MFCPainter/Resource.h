@@ -32,9 +32,7 @@
 #define IDD_SAVE_DIALOG                 317
 #define IDD_LOAD_DIALOG                 322
 #define IDD_NEW_DIALOG                  323
-#define IDD_EDIT_DIALOG                 328
 #define IDC_NEW_DIALOG                  1002
-#define IDC_EDIT_LT                     1006
 #define ID_FREELINE                     32771
 #define ID_LINE                         32772
 #define ID_RECTANGLE                    32773
