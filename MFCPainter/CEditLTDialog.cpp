@@ -25,7 +25,6 @@ void CEditLTDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_EDIT_LT, m_nEditLT);
-
 }
 
 

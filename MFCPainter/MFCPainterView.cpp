@@ -76,7 +76,6 @@ void CMFCPainterView::OnDraw(CDC* /*pDC*/)
 void CMFCPainterView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 {
 #ifndef SHARED_HANDLERS
-	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
 #endif
 }
 
@@ -213,6 +212,7 @@ void CMFCPainterView::OnLButtonUp(UINT nFlags, CPoint point)
 void CMFCPainterView::OnPaint()
 {
 	do {
+		//더블 버퍼링을 통한 떨림 제거
 		CPaintDC dc(this);
 		CDC *pDC = &dc;
 
@@ -242,7 +242,7 @@ void CMFCPainterView::OnPaint()
 }
 
 
-void CMFCPainterView::OnLinecolor()
+void CMFCPainterView::OnLinecolor() //선 색 바꾸기
 {
 	do {
 		CColorDialog dlg;
@@ -254,7 +254,7 @@ void CMFCPainterView::OnLinecolor()
 }
 
 
-void CMFCPainterView::OnFillcolor()
+void CMFCPainterView::OnFillcolor() //채우기 색 바꾸기
 {
 	do {
 		CColorDialog dlg;
@@ -264,7 +264,7 @@ void CMFCPainterView::OnFillcolor()
 	} while (false);
 }
 
-void CMFCPainterView::OnFileSave()
+void CMFCPainterView::OnFileSave() //vector를 string 형태로 "data.ini" 파일에 저장
 {
 	do {
 		CSaveDialog dlg;
@@ -282,7 +282,7 @@ void CMFCPainterView::OnFileSave()
 }
 
 
-void CMFCPainterView::OnFileOpen()
+void CMFCPainterView::OnFileOpen() //data.ini 파일 불러오기
 {
 	do {
 		CLoadDialog dlg;
@@ -291,7 +291,7 @@ void CMFCPainterView::OnFileOpen()
 			std::ifstream in("data.ini");
 			string line;
 			getline(in, line);
-			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end()); //오른쪽에 있는 \n 제거(공백은 다 제거하는 기능임)
 			int nvecSize = stoi(line);
 			while (getline(in, line)) {
 				line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
