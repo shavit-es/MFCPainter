@@ -5,6 +5,10 @@
 #pragma once
 #include <vector>
 #include <iostream>
+#include <fstream>
+#include <algorithm>
+#include <string>
+#include <cctype>
 
 #include "CRec.h"
 #include "CEll.h"
@@ -71,6 +75,9 @@ public:
 	afx_msg void OnLt7();
 	afx_msg void OnLt9();
 	afx_msg void OnLt11();
+	afx_msg void OnFileSave();
+	afx_msg void OnFileOpen();
+	afx_msg void OnFileNew();
 };
 
 #ifndef _DEBUG  // MFCPainterView.cpp의 디버그 버전

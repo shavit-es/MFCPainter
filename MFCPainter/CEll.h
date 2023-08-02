@@ -2,6 +2,7 @@
 #include "pch.h"
 #include "framework.h"
 #include "CElement.h"
+#include <fstream>
 
 class CEll : public CElement
 {
@@ -24,5 +25,7 @@ public:
 	COLORREF Getlinecolor();
 	COLORREF Getfillcolor();
 	void Draw(CDC &memDC);
+
+	virtual string Save();
 };
 

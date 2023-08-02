@@ -61,3 +61,18 @@ void CEll::Draw(CDC &memDC) {
 	pOldBrush = (CBrush *)memDC.SelectObject(brush);
 	memDC.Ellipse(Getx(), Gety(), Getxw(), Getyh());
 }
+
+string CEll::Save()
+{
+	string s = "";
+	s += "CEll\n";
+	s += to_string(x) + "\n"; //형변환 해주어야함
+	s += to_string(y) + "\n";
+	s += to_string(xw) + "\n";
+	s += to_string(yh) + "\n";
+	s += to_string(linethickness) + "\n";
+	s += to_string(linecolor) + "\n";
+	s += to_string(fillcolor) + "\n";
+
+	return s;
+}

@@ -13,6 +13,8 @@
 #include "MFCPainterDoc.h"
 #include "MFCPainterView.h"
 
+
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -42,6 +44,9 @@ ON_COMMAND(ID_LT5, &CMFCPainterView::OnLt5)
 ON_COMMAND(ID_LT7, &CMFCPainterView::OnLt7)
 ON_COMMAND(ID_LT9, &CMFCPainterView::OnLt9)
 ON_COMMAND(ID_LT11, &CMFCPainterView::OnLt11)
+ON_COMMAND(ID_FILE_SAVE, &CMFCPainterView::OnFileSave)
+ON_COMMAND(ID_FILE_OPEN, &CMFCPainterView::OnFileOpen)
+ON_COMMAND(ID_FILE_NEW, &CMFCPainterView::OnFileNew)
 END_MESSAGE_MAP()
 
 // CMFCPainterView 생성/소멸
@@ -272,3 +277,62 @@ void CMFCPainterView::OnLt9() { m_nLineThickness = 9; }
 void CMFCPainterView::OnLt11() { m_nLineThickness = 11; }
 
 
+
+
+void CMFCPainterView::OnFileSave()
+{
+	std::ofstream fout;
+	fout.open("data.ini");
+	fout << m_vecElement.size();
+	fout << "\n";
+	for (int i = 0; i < m_vecElement.size(); i++) {
+		fout << m_vecElement[i]->Save();
+	}
+	fout.close();
+}
+
+
+void CMFCPainterView::OnFileOpen()
+{
+	m_vecElement.resize(0);
+	std::ifstream in("data.ini");
+	string line;
+	getline(in, line);
+	line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+	int nvecSize = stoi(line);
+	while(getline(in, line)) {
+		line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+		if (line == "CEll") {
+			getline(in, line);
+			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+			LONG x = stol(line);
+			getline(in, line);
+			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+			LONG y = stol(line);
+			getline(in, line);
+			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+			LONG xw = stol(line);
+			getline(in, line);
+			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+			LONG yh = stol(line);
+			getline(in, line);
+			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+			int linethickness = stoi(line);
+			getline(in, line);
+			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+			COLORREF linecolor = stoi(line);
+			getline(in, line);
+			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+			COLORREF fillcolor = stoi(line);
+			m_vecElement.push_back(new CEll(x, y, xw, yh, linethickness, linecolor, fillcolor));
+		}
+	}
+	Invalidate();
+}
+
+
+void CMFCPainterView::OnFileNew()
+{
+	m_vecElement.resize(0);
+	Invalidate();
+}

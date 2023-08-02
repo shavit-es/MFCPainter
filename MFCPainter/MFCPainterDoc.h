@@ -5,7 +5,6 @@
 
 #pragma once
 
-
 class CMFCPainterDoc : public CDocument
 {
 protected: // serialization에서만 만들어집니다.
