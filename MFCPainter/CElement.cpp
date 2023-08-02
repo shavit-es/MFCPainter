@@ -14,4 +14,3 @@ CElement::CElement(CElement & other)
 
 }
 
-IMPLEMENT_SERIAL(CElement, CObject, 1);

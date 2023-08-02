@@ -129,20 +129,20 @@ void CMFCPainterView::OnLButtonDown(UINT nFlags, CPoint point)
 		SetCapture();
 		//버튼 클릭하면 시작 지점 설정(벡터에 추가)
 		if (m_nType == ID_FREELINE && m_bNotDrawing) {
-			m_vecElement.push_back(new CFreeline(point.x, point.y, m_nLineThickness, m_ColorLine, false));
+			m_vecpElement.push_back(new CFreeline(point.x, point.y, m_nLineThickness, m_ColorLine, false));
 			m_bNotDrawing = false;
 		}
 		else if (m_nType == ID_LINE && m_bNotDrawing) {
-			m_vecElement.push_back(new CStraightLine(point.x, point.y, m_nLineThickness, m_ColorLine, true));
-			m_vecElement.push_back(new CStraightLine(point.x, point.y, m_nLineThickness, m_ColorLine, true));
+			m_vecpElement.push_back(new CStraightLine(point.x, point.y, m_nLineThickness, m_ColorLine, true));
+			m_vecpElement.push_back(new CStraightLine(point.x, point.y, m_nLineThickness, m_ColorLine, true));
 			m_bNotDrawing = false;
 		}
 		else if (m_nType == ID_RECTANGLE && m_bNotDrawing) {
-			m_vecElement.push_back(new CRec(point.x, point.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
+			m_vecpElement.push_back(new CRec(point.x, point.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
 			m_bNotDrawing = false;
 		}
 		else if (m_nType == ID_ELLIPSE && m_bNotDrawing) {
-			m_vecElement.push_back(new CEll(point.x, point.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
+			m_vecpElement.push_back(new CEll(point.x, point.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
 			m_bNotDrawing = false;
 		}
 		CView::OnLButtonDown(nFlags, point);
@@ -161,22 +161,22 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 		CPen pen, *pOldPen;
 		CBrush brush, *pOldBrush;
 		if (m_nType == ID_FREELINE && !m_bNotDrawing) {
-			m_vecElement.push_back(new CFreeline(point.x, point.y, m_nLineThickness, m_ColorLine));
+			m_vecpElement.push_back(new CFreeline(point.x, point.y, m_nLineThickness, m_ColorLine));
 			Invalidate(false);
 		}
 		else if (m_nType == ID_LINE && !m_bNotDrawing) {
-			m_vecElement.pop_back();
-			m_vecElement.push_back(new CStraightLine(point.x, point.y, m_nLineThickness, m_ColorLine, false));
+			m_vecpElement.pop_back();
+			m_vecpElement.push_back(new CStraightLine(point.x, point.y, m_nLineThickness, m_ColorLine, false));
 			Invalidate(false);
 		}
 		else if (m_nType == ID_RECTANGLE&&!m_bNotDrawing) {
-			m_vecElement.pop_back();
-			m_vecElement.push_back(new CRec(m_cptPoint.x, m_cptPoint.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
+			m_vecpElement.pop_back();
+			m_vecpElement.push_back(new CRec(m_cptPoint.x, m_cptPoint.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
 			Invalidate(false);			
 		}
 		else if (m_nType == ID_ELLIPSE && !m_bNotDrawing) {
-			m_vecElement.pop_back();
-			m_vecElement.push_back(new CEll(m_cptPoint.x, m_cptPoint.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
+			m_vecpElement.pop_back();
+			m_vecpElement.push_back(new CEll(m_cptPoint.x, m_cptPoint.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
 			Invalidate(false);
 		}
 		m_cptNewPoint = point;
@@ -193,7 +193,7 @@ void CMFCPainterView::OnLButtonUp(UINT nFlags, CPoint point)
 		CBrush brush, *pOldBrush;
 		//마우스 뗄 때 그리고 있지 않음(bool)으로 할당
 		if (m_nType == ID_FREELINE) {
-			m_vecElement.push_back(new CFreeline(point.x, point.y, m_nLineThickness, m_ColorLine, false));
+			m_vecpElement.push_back(new CFreeline(point.x, point.y, m_nLineThickness, m_ColorLine, false));
 			m_bNotDrawing = true;
 		}
 		else if (m_nType == ID_LINE) {
@@ -231,7 +231,7 @@ void CMFCPainterView::OnPaint()
 		pOldBitmap = (CBitmap*)memDC.SelectObject(&bmp);
 		memDC.PatBlt(0, 0, rect.Width(), rect.Height(), WHITENESS);
 
-		for (auto elem : m_vecElement)
+		for (auto elem : m_vecpElement)
 		{
 			elem->Draw(memDC);
 		}
@@ -283,10 +283,10 @@ void CMFCPainterView::OnFileSave()
 {
 	std::ofstream fout;
 	fout.open("data.ini");
-	fout << m_vecElement.size();
+	fout << m_vecpElement.size();
 	fout << "\n";
-	for (int i = 0; i < m_vecElement.size(); i++) {
-		fout << m_vecElement[i]->Save();
+	for (int i = 0; i < m_vecpElement.size(); i++) {
+		fout << m_vecpElement[i]->Save();
 	}
 	fout.close();
 }
@@ -294,7 +294,7 @@ void CMFCPainterView::OnFileSave()
 
 void CMFCPainterView::OnFileOpen()
 {
-	m_vecElement.resize(0);
+	m_vecpElement.resize(0);
 	std::ifstream in("data.ini");
 	string line;
 	getline(in, line);
@@ -318,7 +318,7 @@ void CMFCPainterView::OnFileOpen()
 			getline(in, line);
 			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
 			bool bline = stoi(line);
-			m_vecElement.push_back(new CFreeline(x, y, linethickness, linecolor, bline));
+			m_vecpElement.push_back(new CFreeline(x, y, linethickness, linecolor, bline));
 		}
 		else if (line == "CStraightLine") {
 			getline(in, line);
@@ -336,7 +336,7 @@ void CMFCPainterView::OnFileOpen()
 			getline(in, line);
 			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
 			bool bstart = stoi(line);
-			m_vecElement.push_back(new CStraightLine(x, y, linethickness, linecolor, bstart));
+			m_vecpElement.push_back(new CStraightLine(x, y, linethickness, linecolor, bstart));
 		}
 		else if (line == "CRec") {
 			getline(in, line);
@@ -360,7 +360,7 @@ void CMFCPainterView::OnFileOpen()
 			getline(in, line);
 			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
 			COLORREF fillcolor = stoi(line);
-			m_vecElement.push_back(new CRec(x, y, xw, yh, linethickness, linecolor, fillcolor));
+			m_vecpElement.push_back(new CRec(x, y, xw, yh, linethickness, linecolor, fillcolor));
 		}
 		else if (line == "CEll") {
 			getline(in, line);
@@ -384,7 +384,7 @@ void CMFCPainterView::OnFileOpen()
 			getline(in, line);
 			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
 			COLORREF fillcolor = stoi(line);
-			m_vecElement.push_back(new CEll(x, y, xw, yh, linethickness, linecolor, fillcolor));
+			m_vecpElement.push_back(new CEll(x, y, xw, yh, linethickness, linecolor, fillcolor));
 		}
 	}
 	Invalidate();
@@ -393,6 +393,6 @@ void CMFCPainterView::OnFileOpen()
 
 void CMFCPainterView::OnFileNew()
 {
-	m_vecElement.resize(0);
+	m_vecpElement.resize(0);
 	Invalidate();
 }
