@@ -4,7 +4,6 @@
 //
 #define IDD_ABOUTBOX                    100
 #define IDD_PAINTER_DIALOG              100
-#define IDR_POPUP_EDIT                  119
 #define ID_STATUSBAR_PANE1              120
 #define ID_STATUSBAR_PANE2              121
 #define IDS_STATUS_PANE1                122
@@ -50,7 +49,6 @@
 #define ID_32788                        32788
 #define ID_32789                        32789
 #define ID_                             32790
-#define ID_LINETHICKNESSBUTTON          32791
 #define ID_32792                        32792
 #define ID_32793                        32793
 #define ID_32794                        32794
@@ -59,14 +57,6 @@
 #define ID_32797                        32797
 #define ID_32798                        32798
 #define ID_32799                        32799
-#define ID_LINETHICKNESS_1              32800
-#define ID_LINETHICKNESS_2              32801
-#define ID_LINETHICKNESS_3              32802
-#define ID_LINETHICKNESS_5              32803
-#define ID_LINETHICKNESS_7              32804
-#define ID_LINETHICKNESS_9              32805
-#define ID_LINETHICKNESS_11             32806
-#define ID_LINETHICKNESS_13             32807
 #define ID_32808                        32808
 #define ID_32809                        32809
 #define ID_32810                        32810
