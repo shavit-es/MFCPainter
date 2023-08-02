@@ -58,3 +58,18 @@ void CRec::Draw(CDC &memDC) {
 	pOldBrush = (CBrush *)memDC.SelectObject(brush);
 	memDC.Rectangle(Getx(), Gety(), Getxw(), Getyh());
 }
+
+string CRec::Save()
+{
+	string s = "";
+	s += "CRec\n";
+	s += to_string(x) + "\n"; //형변환 해주어야함
+	s += to_string(y) + "\n";
+	s += to_string(xw) + "\n";
+	s += to_string(yh) + "\n";
+	s += to_string(linethickness) + "\n";
+	s += to_string(linecolor) + "\n";
+	s += to_string(fillcolor) + "\n";
+
+	return s;
+}

@@ -5,9 +5,10 @@ CStraightLine::CStraightLine()
 {
 }
 
-CStraightLine::CStraightLine(CPoint tpoint, int tlinethickness, COLORREF tlinecolor, bool tbstart)
+CStraightLine::CStraightLine(LONG tx, LONG ty, int tlinethickness, COLORREF tlinecolor, bool tbstart)
 {
-	point = tpoint;
+	x = tx;
+	y = ty;
 	linethickness = tlinethickness;
 	linecolor = tlinecolor;
 	bstart = tbstart;
@@ -15,7 +16,8 @@ CStraightLine::CStraightLine(CPoint tpoint, int tlinethickness, COLORREF tlineco
 
 CStraightLine::CStraightLine(CStraightLine & other)
 {
-	point = other.Getpoint();
+	x = other.Getx();
+	y = other.Gety();
 	linethickness = other.Getlinethickness();
 	linecolor = other.Getlinecolor();
 }
@@ -30,9 +32,14 @@ int CStraightLine::Getlinethickness() {
 COLORREF CStraightLine::Getlinecolor() {
 	return linecolor;
 }
-CPoint CStraightLine::Getpoint() {
-	return point;
+LONG CStraightLine::Getx() {
+	return x;
 }
+
+LONG CStraightLine::Gety() {
+	return y;
+}
+
 bool CStraightLine::Getbstart() {
 	return bstart;
 }
@@ -43,9 +50,22 @@ void CStraightLine::Draw(CDC &memDC) {
 	pen.CreatePen(PS_SOLID, Getlinethickness(), Getlinecolor());
 	pOldPen = (CPen *)memDC.SelectObject(&pen);
 	if (Getbstart()) {
-		memDC.MoveTo(Getpoint());
+		memDC.MoveTo(Getx(), Gety());
 	}
 	else {
-		memDC.LineTo(Getpoint());
+		memDC.LineTo(Getx(), Gety());
 	}
+}
+
+string CStraightLine::Save()
+{
+	string s = "";
+	s += "CStraightLine\n";
+	s += to_string(x) + "\n"; //형변환 해주어야함
+	s += to_string(y) + "\n";
+	s += to_string(linethickness) + "\n";
+	s += to_string(linecolor) + "\n";
+	s += to_string(bstart) + "\n";
+
+	return s;
 }

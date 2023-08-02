@@ -7,22 +7,25 @@
 class CFreeline : public CElement
 {
 protected:
-	CPoint point;
+	LONG x;
+	LONG y;
 
 	int linethickness;
 	COLORREF linecolor;
 	bool bline;
 
 public:
-	CFreeline::CFreeline(CPoint tpoint, int linethickness, COLORREF linecolor, bool tbline);
-	CFreeline::CFreeline(CPoint tpoint, int linethickness, COLORREF linecolor);
+	CFreeline::CFreeline(LONG x, LONG y, int linethickness, COLORREF linecolor, bool tbline);
+	CFreeline::CFreeline(LONG x, LONG y, int linethickness, COLORREF linecolor);
 	CFreeline(CFreeline& other);
 	virtual ~CFreeline();
 	int Getlinethickness();
 	COLORREF Getlinecolor();
-	CPoint Getpoint();
+	LONG Getx();
+	LONG Gety();
 	bool Getbline();
 
+	virtual string Save();
 	void Draw(CDC &memDC);
 
 };

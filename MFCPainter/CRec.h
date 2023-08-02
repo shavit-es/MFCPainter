@@ -25,6 +25,7 @@ public:
 	COLORREF Getfillcolor();
 
 	void Draw(CDC &memDC);
+	virtual string Save();
 };
 
 

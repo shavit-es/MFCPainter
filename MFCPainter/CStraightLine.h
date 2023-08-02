@@ -7,22 +7,24 @@
 class CStraightLine : public CElement
 {
 private:
-	CPoint point;
+	LONG x;
+	LONG y;
 	int linethickness;
 	COLORREF linecolor;
 	bool bstart;
 
 public:
 	CStraightLine::CStraightLine();
-	CStraightLine::CStraightLine(CPoint tpoint, int tlinethickness, COLORREF tlinecolor, bool bstart);
+	CStraightLine::CStraightLine(LONG x, LONG y, int tlinethickness, COLORREF tlinecolor, bool bstart);
 	CStraightLine(CStraightLine& other);
 	virtual ~CStraightLine();
 	
 	int Getlinethickness();
 	COLORREF Getlinecolor();
-	CPoint Getpoint();
+	LONG Getx();
+	LONG Gety();
 	bool Getbstart();
 
 	void Draw(CDC &memDC);
-
+	virtual string Save();
 };

@@ -129,12 +129,12 @@ void CMFCPainterView::OnLButtonDown(UINT nFlags, CPoint point)
 		SetCapture();
 		//버튼 클릭하면 시작 지점 설정(벡터에 추가)
 		if (m_nType == ID_FREELINE && m_bNotDrawing) {
-			m_vecElement.push_back(new CFreeline(point, m_nLineThickness, m_ColorLine, false));
+			m_vecElement.push_back(new CFreeline(point.x, point.y, m_nLineThickness, m_ColorLine, false));
 			m_bNotDrawing = false;
 		}
 		else if (m_nType == ID_LINE && m_bNotDrawing) {
-			m_vecElement.push_back(new CStraightLine(point, m_nLineThickness, m_ColorLine, true));
-			m_vecElement.push_back(new CStraightLine(point, m_nLineThickness, m_ColorLine, true));
+			m_vecElement.push_back(new CStraightLine(point.x, point.y, m_nLineThickness, m_ColorLine, true));
+			m_vecElement.push_back(new CStraightLine(point.x, point.y, m_nLineThickness, m_ColorLine, true));
 			m_bNotDrawing = false;
 		}
 		else if (m_nType == ID_RECTANGLE && m_bNotDrawing) {
@@ -161,12 +161,12 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 		CPen pen, *pOldPen;
 		CBrush brush, *pOldBrush;
 		if (m_nType == ID_FREELINE && !m_bNotDrawing) {
-			m_vecElement.push_back(new CFreeline(point, m_nLineThickness, m_ColorLine));
+			m_vecElement.push_back(new CFreeline(point.x, point.y, m_nLineThickness, m_ColorLine));
 			Invalidate(false);
 		}
 		else if (m_nType == ID_LINE && !m_bNotDrawing) {
 			m_vecElement.pop_back();
-			m_vecElement.push_back(new CStraightLine(point, m_nLineThickness, m_ColorLine, false));
+			m_vecElement.push_back(new CStraightLine(point.x, point.y, m_nLineThickness, m_ColorLine, false));
 			Invalidate(false);
 		}
 		else if (m_nType == ID_RECTANGLE&&!m_bNotDrawing) {
@@ -193,7 +193,7 @@ void CMFCPainterView::OnLButtonUp(UINT nFlags, CPoint point)
 		CBrush brush, *pOldBrush;
 		//마우스 뗄 때 그리고 있지 않음(bool)으로 할당
 		if (m_nType == ID_FREELINE) {
-			m_vecElement.push_back(new CFreeline(point, m_nLineThickness, m_ColorLine, false));
+			m_vecElement.push_back(new CFreeline(point.x, point.y, m_nLineThickness, m_ColorLine, false));
 			m_bNotDrawing = true;
 		}
 		else if (m_nType == ID_LINE) {
@@ -302,7 +302,67 @@ void CMFCPainterView::OnFileOpen()
 	int nvecSize = stoi(line);
 	while(getline(in, line)) {
 		line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
-		if (line == "CEll") {
+		if (line == "CFreeline") {
+			getline(in, line);
+			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+			LONG x = stol(line);
+			getline(in, line);
+			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+			LONG y = stol(line);
+			getline(in, line);
+			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+			int linethickness = stoi(line);
+			getline(in, line);
+			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+			COLORREF linecolor = stoi(line);
+			getline(in, line);
+			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+			bool bline = stoi(line);
+			m_vecElement.push_back(new CFreeline(x, y, linethickness, linecolor, bline));
+		}
+		else if (line == "CStraightLine") {
+			getline(in, line);
+			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+			LONG x = stol(line);
+			getline(in, line);
+			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+			LONG y = stol(line);
+			getline(in, line);
+			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+			int linethickness = stoi(line);
+			getline(in, line);
+			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+			COLORREF linecolor = stoi(line);
+			getline(in, line);
+			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+			bool bstart = stoi(line);
+			m_vecElement.push_back(new CStraightLine(x, y, linethickness, linecolor, bstart));
+		}
+		else if (line == "CRec") {
+			getline(in, line);
+			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+			LONG x = stol(line);
+			getline(in, line);
+			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+			LONG y = stol(line);
+			getline(in, line);
+			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+			LONG xw = stol(line);
+			getline(in, line);
+			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+			LONG yh = stol(line);
+			getline(in, line);
+			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+			int linethickness = stoi(line);
+			getline(in, line);
+			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+			COLORREF linecolor = stoi(line);
+			getline(in, line);
+			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+			COLORREF fillcolor = stoi(line);
+			m_vecElement.push_back(new CRec(x, y, xw, yh, linethickness, linecolor, fillcolor));
+		}
+		else if (line == "CEll") {
 			getline(in, line);
 			line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
 			LONG x = stol(line);
