@@ -1,8 +1,4 @@
-﻿
-// MFCPainterView.h: CMFCPainterView 클래스의 인터페이스
-//
-
-#pragma once
+﻿#pragma once
 #include <vector>
 #include <iostream>
 #include <fstream>
