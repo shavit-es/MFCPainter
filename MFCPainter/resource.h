@@ -32,7 +32,9 @@
 #define IDD_SAVE_DIALOG                 317
 #define IDD_LOAD_DIALOG                 322
 #define IDD_NEW_DIALOG                  323
+#define IDD_LT_DIALOG                   330
 #define IDC_NEW_DIALOG                  1002
+#define IDC_EDIT_LT                     1007
 #define ID_FREELINE                     32771
 #define ID_LINE                         32772
 #define ID_RECTANGLE                    32773
@@ -88,9 +90,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        330
+#define _APS_NEXT_RESOURCE_VALUE        332
 #define _APS_NEXT_COMMAND_VALUE         32826
-#define _APS_NEXT_CONTROL_VALUE         1007
+#define _APS_NEXT_CONTROL_VALUE         1008
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif
