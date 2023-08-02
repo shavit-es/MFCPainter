@@ -30,7 +30,7 @@ public:
 	// 작업입니다.
 public:
 	CPoint m_cptPoint, m_cptNewPoint;
-	vector<CElement*> m_vecElement;
+	vector<CElement*> m_vecpElement;
 	int m_nType = ID_FREELINE;
 	int m_nLineThickness = 1;
 	bool m_bNotDrawing = true;
