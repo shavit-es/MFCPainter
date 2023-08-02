@@ -187,6 +187,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CEditLTDialog.h" />
     <ClInclude Include="CElement.h" />
     <ClInclude Include="CEll.h" />
     <ClInclude Include="CFreeline.h" />
@@ -205,6 +206,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CEditLTDialog.cpp" />
     <ClCompile Include="CElement.cpp" />
     <ClCompile Include="CEll.cpp" />
     <ClCompile Include="CFreeline.cpp" />

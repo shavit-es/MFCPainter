@@ -16,6 +16,7 @@
 #include "CSaveDialog.h"
 #include "CLoadDialog.h"
 #include "CNewDialog.h"
+#include "CEditLTDialog.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -39,13 +40,6 @@ BEGIN_MESSAGE_MAP(CMFCPainterView, CView)
 	ON_COMMAND(ID_FILLCOLOR, &CMFCPainterView::OnFillcolor)
 
 //선 굵기 함수
-ON_COMMAND(ID_LT1, &CMFCPainterView::OnLt1)
-ON_COMMAND(ID_LT2, &CMFCPainterView::OnLt2)
-ON_COMMAND(ID_LT3, &CMFCPainterView::OnLt3)
-ON_COMMAND(ID_LT5, &CMFCPainterView::OnLt5)
-ON_COMMAND(ID_LT7, &CMFCPainterView::OnLt7)
-ON_COMMAND(ID_LT9, &CMFCPainterView::OnLt9)
-ON_COMMAND(ID_LT11, &CMFCPainterView::OnLt11)
 ON_COMMAND(ID_FILE_SAVE, &CMFCPainterView::OnFileSave)
 ON_COMMAND(ID_FILE_OPEN, &CMFCPainterView::OnFileOpen)
 ON_COMMAND(ID_FILE_NEW, &CMFCPainterView::OnFileNew)
@@ -132,20 +126,20 @@ void CMFCPainterView::OnLButtonDown(UINT nFlags, CPoint point)
 		SetCapture();
 		//버튼 클릭하면 시작 지점 설정(벡터에 추가)
 		if (m_nType == ID_FREELINE && m_bNotDrawing) {
-			m_vecpElement.push_back(new CFreeline(point.x, point.y, m_nLineThick, m_ColorLine, false));
+			m_vecpElement.push_back(new CFreeline(point.x, point.y, m_nLineThickness, m_ColorLine, false));
 			m_bNotDrawing = false;
 		}
 		else if (m_nType == ID_LINE && m_bNotDrawing) {
-			m_vecpElement.push_back(new CStraightLine(point.x, point.y, m_nLineThick, m_ColorLine, true));
-			m_vecpElement.push_back(new CStraightLine(point.x, point.y, m_nLineThick, m_ColorLine, true));
+			m_vecpElement.push_back(new CStraightLine(point.x, point.y, m_nLineThickness, m_ColorLine, true));
+			m_vecpElement.push_back(new CStraightLine(point.x, point.y, m_nLineThickness, m_ColorLine, true));
 			m_bNotDrawing = false;
 		}
 		else if (m_nType == ID_RECTANGLE && m_bNotDrawing) {
-			m_vecpElement.push_back(new CRec(point.x, point.y, point.x, point.y, m_nLineThick, m_ColorLine, m_ColorFill));
+			m_vecpElement.push_back(new CRec(point.x, point.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
 			m_bNotDrawing = false;
 		}
 		else if (m_nType == ID_ELLIPSE && m_bNotDrawing) {
-			m_vecpElement.push_back(new CEll(point.x, point.y, point.x, point.y, m_nLineThick, m_ColorLine, m_ColorFill));
+			m_vecpElement.push_back(new CEll(point.x, point.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
 			m_bNotDrawing = false;
 		}
 		CView::OnLButtonDown(nFlags, point);
@@ -164,22 +158,22 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 		CPen pen, *pOldPen;
 		CBrush brush, *pOldBrush;
 		if (m_nType == ID_FREELINE && !m_bNotDrawing) {
-			m_vecpElement.push_back(new CFreeline(point.x, point.y, m_nLineThick, m_ColorLine));
+			m_vecpElement.push_back(new CFreeline(point.x, point.y, m_nLineThickness, m_ColorLine));
 			Invalidate(false);
 		}
 		else if (m_nType == ID_LINE && !m_bNotDrawing) {
 			m_vecpElement.pop_back();
-			m_vecpElement.push_back(new CStraightLine(point.x, point.y, m_nLineThick, m_ColorLine, false));
+			m_vecpElement.push_back(new CStraightLine(point.x, point.y, m_nLineThickness, m_ColorLine, false));
 			Invalidate(false);
 		}
 		else if (m_nType == ID_RECTANGLE&&!m_bNotDrawing) {
 			m_vecpElement.pop_back();
-			m_vecpElement.push_back(new CRec(m_cptPoint.x, m_cptPoint.y, point.x, point.y, m_nLineThick, m_ColorLine, m_ColorFill));
+			m_vecpElement.push_back(new CRec(m_cptPoint.x, m_cptPoint.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
 			Invalidate(false);			
 		}
 		else if (m_nType == ID_ELLIPSE && !m_bNotDrawing) {
 			m_vecpElement.pop_back();
-			m_vecpElement.push_back(new CEll(m_cptPoint.x, m_cptPoint.y, point.x, point.y, m_nLineThick, m_ColorLine, m_ColorFill));
+			m_vecpElement.push_back(new CEll(m_cptPoint.x, m_cptPoint.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
 			Invalidate(false);
 		}
 		m_cptNewPoint = point;
@@ -196,7 +190,7 @@ void CMFCPainterView::OnLButtonUp(UINT nFlags, CPoint point)
 		CBrush brush, *pOldBrush;
 		//마우스 뗄 때 그리고 있지 않음(bool)으로 할당
 		if (m_nType == ID_FREELINE) {
-			m_vecpElement.push_back(new CFreeline(point.x, point.y, m_nLineThick, m_ColorLine, false));
+			m_vecpElement.push_back(new CFreeline(point.x, point.y, m_nLineThickness, m_ColorLine, false));
 			m_bNotDrawing = true;
 		}
 		else if (m_nType == ID_LINE) {
@@ -269,18 +263,6 @@ void CMFCPainterView::OnFillcolor()
 		}
 	} while (false);
 }
-
-
-void CMFCPainterView::OnLt1() { m_nLineThick = 1; }
-void CMFCPainterView::OnLt2() { m_nLineThick = 2; }
-void CMFCPainterView::OnLt3() { m_nLineThick = 3; }
-void CMFCPainterView::OnLt5() { m_nLineThick = 5; }
-void CMFCPainterView::OnLt7() { m_nLineThick = 7; }
-void CMFCPainterView::OnLt9() { m_nLineThick = 9; }
-void CMFCPainterView::OnLt11() { m_nLineThick = 11; }
-
-
-
 
 void CMFCPainterView::OnFileSave()
 {
@@ -419,6 +401,11 @@ void CMFCPainterView::OnFileNew()
 void CMFCPainterView::OnLinethickness()
 {
 	do {
-		
+		CEditLTDialog dlg;
+		dlg.m_nEditLT = m_nLineThickness;
+
+		if (dlg.DoModal() == IDOK) {
+			m_nLineThickness = dlg.m_nEditLT;
+		}
 	} while (false);
 }

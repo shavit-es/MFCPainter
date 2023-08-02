@@ -28,7 +28,7 @@ public:
 	CPoint m_cptPoint, m_cptNewPoint;
 	vector<CElement*> m_vecpElement;
 	int m_nType = ID_FREELINE;
-	int m_nLineThick = 1;
+	int m_nLineThickness = 1;
 	bool m_bNotDrawing = true;
 	//검은색으로 초기화
 	COLORREF m_ColorLine = RGB(0,0,0);
@@ -64,13 +64,6 @@ public:
 	afx_msg void OnPaint();
 	afx_msg void OnLinecolor();
 	afx_msg void OnFillcolor();
-	afx_msg void OnLt1();
-	afx_msg void OnLt2();
-	afx_msg void OnLt3();
-	afx_msg void OnLt5();
-	afx_msg void OnLt7();
-	afx_msg void OnLt9();
-	afx_msg void OnLt11();
 	afx_msg void OnFileSave();
 	afx_msg void OnFileOpen();
 	afx_msg void OnFileNew();
