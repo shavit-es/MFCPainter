@@ -28,7 +28,7 @@ public:
 	CPoint m_cptPoint, m_cptNewPoint;
 	vector<CElement*> m_vecpElement;
 	int m_nType = ID_FREELINE;
-	int m_nLineThickness = 1;
+	int m_nLineThick = 1;
 	bool m_bNotDrawing = true;
 	//검은색으로 초기화
 	COLORREF m_ColorLine = RGB(0,0,0);
@@ -74,6 +74,7 @@ public:
 	afx_msg void OnFileSave();
 	afx_msg void OnFileOpen();
 	afx_msg void OnFileNew();
+	afx_msg void OnLinethickness();
 };
 
 #ifndef _DEBUG  // MFCPainterView.cpp의 디버그 버전
