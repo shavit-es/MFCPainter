@@ -1,7 +1,4 @@
-﻿// CEditLTDialog.cpp: 구현 파일
-//
-
-#include "pch.h"
+﻿#include "pch.h"
 #include "MFCPainter.h"
 #include "CEditLTDialog.h"
 #include "afxdialogex.h"
