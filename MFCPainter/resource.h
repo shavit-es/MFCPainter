@@ -3,6 +3,7 @@
 // MFCPainter.rc에서 사용되고 있습니다.
 //
 #define IDD_ABOUTBOX                    100
+#define IDD_PAINTER_DIALOG              100
 #define IDR_POPUP_EDIT                  119
 #define ID_STATUSBAR_PANE1              120
 #define ID_STATUSBAR_PANE2              121
@@ -28,6 +29,12 @@
 #define ID_VIEW_APPLOOK_WINDOWS_7       219
 #define IDS_EDIT_MENU                   306
 #define IDR_TOOLBAR1                    310
+#define IDD_SAVE_DIALOG                 317
+#define IDD_LOAD_DIALOG                 322
+#define IDD_NEW_DIALOG                  323
+#define IDD_EDIT_DIALOG                 328
+#define IDC_NEW_DIALOG                  1002
+#define IDC_EDIT_LT                     1006
 #define ID_FREELINE                     32771
 #define ID_LINE                         32772
 #define ID_RECTANGLE                    32773
@@ -77,14 +84,15 @@
 #define ID_LT5                          32822
 #define ID_LT9                          32823
 #define ID_LT11                         32824
+#define ID_32825                        32825
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        317
-#define _APS_NEXT_COMMAND_VALUE         32825
-#define _APS_NEXT_CONTROL_VALUE         1002
+#define _APS_NEXT_RESOURCE_VALUE        330
+#define _APS_NEXT_COMMAND_VALUE         32826
+#define _APS_NEXT_CONTROL_VALUE         1007
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif
