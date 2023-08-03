@@ -25,16 +25,14 @@ public:
 
 	// 작업입니다.
 public:
-	CPoint m_cptPoint, m_cptNewPoint;
+	CPoint m_cptPoint;
 	vector<CElement*> m_vecpElement;
 	int m_nType = ID_FREELINE;
 	int m_nLineThickness = 1;
 	bool m_bNotDrawing = true;
-	//검은색으로 초기화
 	COLORREF m_ColorLine = RGB(0,0,0);
 	COLORREF m_ColorFill = RGB(255, 255, 255);
-	COLORREF m_ColorLineXor = RGB(0^255,0^255,0^255);
-	// 재정의입니다.
+
 public:
 	virtual void OnDraw(CDC* pDC);  // 이 뷰를 그리기 위해 재정의되었습니다.
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);

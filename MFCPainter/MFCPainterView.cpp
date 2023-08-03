@@ -121,7 +121,6 @@ void CMFCPainterView::OnLButtonDown(UINT nFlags, CPoint point)
 	do {
 		CClientDC dc(this);
 		m_cptPoint = point;
-		m_cptNewPoint = point;
 		SetCapture();
 		//버튼 클릭하면 시작 지점 설정(벡터에 추가)
 		if (m_nType == ID_FREELINE && m_bNotDrawing) {
@@ -175,7 +174,6 @@ void CMFCPainterView::OnMouseMove(UINT nFlags, CPoint point)
 			m_vecpElement.push_back(new CEll(m_cptPoint.x, m_cptPoint.y, point.x, point.y, m_nLineThickness, m_ColorLine, m_ColorFill));
 			Invalidate(false);
 		}
-		m_cptNewPoint = point;
 	}
 	CView::OnMouseMove(nFlags, point);
 }
@@ -248,7 +246,6 @@ void CMFCPainterView::OnLinecolor() //선 색 바꾸기
 		CColorDialog dlg;
 		if (dlg.DoModal() == IDOK) {
 			m_ColorLine = dlg.GetColor(); //선택한 색을 COLORREF로 return
-			m_ColorLineXor = (RGB(GetRValue(m_ColorLine) ^ 255, GetGValue(m_ColorLine) ^ 255, GetBValue(m_ColorLine) ^ 255));
 		}
 	} while (false);
 }

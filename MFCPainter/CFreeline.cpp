@@ -56,7 +56,7 @@ string CFreeline::Save()
 {
 	string s = "";
 	s += "CFreeline\n";
-	s += to_string(x) + "\n"; //형변환 해주어야함
+	s += to_string(x) + "\n";
 	s += to_string(y) + "\n";
 	s += to_string(linethickness) + "\n";
 	s += to_string(linecolor) + "\n";
